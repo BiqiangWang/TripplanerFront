@@ -18,7 +18,10 @@
 		</view> -->
 		<mix-swiper :list="data.images"></mix-swiper>
 		<view class="introduce column">
-			<text class="title">{{ data.title }}</text>
+			<view class="sight_name">{{ sightname }}</view>
+			<view class="sight_introduction">{{ introduction }}</view>
+			<view class="sight_info"> {{info}}</view>
+			<button class="tocomment" @click="navTo('/pages/product/evaluate')">去评价>></button>
 			<!-- <view class="price-wrap row">
 				<mix-price-view :price="data.price" :size="40"></mix-price-view>
 				<text v-if="data.market_price > data.price" class="m-price">￥{{ data.market_price }}</text>
@@ -32,8 +35,8 @@
 		</view>
 
 		<!-- 打分 -->
-		<view class="scoreBox">
-			<text class="tit">景点评分</text>
+		<!-- <view class="scoreBox">
+			<text class="scoreTitle">为该景点打分：</text>
 			<view class="uni-padding-wrap uni-common-mt star">
 				<view class="uni-flex uni-row">
 					<view :class="{starActive:item}" @click="choise(index)" class="flex-item iconfont"
@@ -47,7 +50,12 @@
 					</view>
 				</view>
 			</view>
-		</view>
+		</view> -->
+		<!-- 		<view class="commentbox">
+			<textarea class="mycommentinput" auto-height="true" placeholder="请输入您的评价" v-model="comment"></textarea>
+			<textarea class="mycommentinput" placeholder="请输入您的评价" maxlength="50" v-model="comment"></textarea>
+			<image class="commitCommentButton" src="../../static/select.png" @click="commitComment"></image>
+		</view> -->
 
 
 		<!-- 评价 -->
@@ -58,7 +66,7 @@
 				<text class="tip">好评率 {{ data.rating_ratio || 100 }}%</text>
 				<text class="mix-icon icon-you"></text>
 			</view>
-			<rating-item v-if="ratingData.data" :item="ratingData.data"></rating-item>
+			<rating-item v-if="ratingData.data" :items="ratingData.data"></rating-item>
 		</view>
 		<view class="detail-desc">
 			<view class="d-header center">
@@ -109,13 +117,13 @@
 						background: "#ffffff",
 					},
 				],
+				sightid: 1,
 				sightname: '景点名称',
-				title: '这里是一段简单的景点介绍',
+				introduction: '这里是一段简单的景点介绍',
 				info: '景点信息啊',
 				clicked_list: [false, false, false, false, false], //对应星星个数
 				currentSku: {},
 				data: {
-					// images: ['../../static/logo.png', '../../static/logo.png', '../../static/logo.png'],
 					images: [{
 							pic: '../../static/logo.png'
 						},
@@ -127,7 +135,23 @@
 						}
 					],
 				},
-				ratingData: {}, //评价
+				ratingData: {
+					data: {
+						user: {
+							anonymous: false,
+							lv: 300,
+							avatar: '/static/icon/default-avatar.png',
+							gender: 2,
+							nickname: '飞飞',
+							username: '飞飞',
+						},
+						rating: 5,
+						content: 'good',
+					},
+					count: 1,
+					rating_ratio: 100
+				}, //评价
+				comment: '',
 			};
 		},
 		onLoad(options) {
@@ -335,6 +359,9 @@
 					uni.share(data);
 				})
 			},
+			commitComment() {
+				console.log(this.comment);
+			}
 		},
 	}
 </script>
@@ -358,6 +385,32 @@
 	}
 
 	/* 标题简介 */
+	.sight_name {
+		font-size: 36rpx;
+		margin-left: 30rpx;
+		margin-bottom: 20rpx;
+	}
+
+	.sight_introduction {
+		font-size: 30rpx;
+		margin-left: 30rpx;
+		margin-bottom: 40rpx;
+		color: #8f8f94;
+	}
+
+	.sight_info {
+		height: 200rpx;
+		font-size: 32rpx;
+		margin-left: 30rpx;
+	}
+
+	.tocomment {
+		margin-left: 450rpx;
+		top: -375rpx;
+		font-size: 32rpx;
+		color: #8f8f94;
+	}
+
 	.introduce {
 		background: #fff;
 		padding: 20rpx 30rpx;
@@ -426,29 +479,33 @@
 
 	.scoreBox {
 		display: flex;
+		height: 50rpx;
+		background-color: #ffffff;
 	}
 
 	.scoreTitle {
-		width: 100%;
-		margin-left: -10%;
+		font-size: 30rpx;
+		width: 250rpx;
+		margin-left: 5%;
 	}
 
 	.star.uni-common-mt {
 		box-sizing: border-box;
-		width: 80%;
+		width: 300rpx;
 		overflow: hidden;
 		padding: 0.85upx;
-		margin-left: -20%;
+		margin-left: -7%;
+		margin-top: -1.5%;
 	}
 
 	.flex-item {
 		display: inline-block;
 		width: 20%;
-		color: #999;
+		/* color: #999; */
 	}
 
 	.starIcon {
-		font-size: 52upx;
+		font-size: 40upx;
 	}
 
 	.starActive {
@@ -456,6 +513,29 @@
 	}
 
 	/* ----------------------打分	----------------------- */
+
+	.commentbox {
+		width: 100%;
+		height: auto;
+		background-color: #FFFFFF;
+	}
+
+	.mycommentinput {
+		background-color: #ffffff;
+		height: 200rpx;
+		width: 90%;
+		word-break: break-all;
+		margin-left: 5%;
+		border-radius: 5px;
+		border: solid 1px #ccc;
+	}
+
+	.commitCommentButton {
+		width: 60rpx;
+		height: 60rpx;
+		margin-left: 645rpx;
+		margin-top: -55rpx;
+	}
 
 
 	/* 分享 */

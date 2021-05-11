@@ -12,7 +12,7 @@
 						(
 							item.user.anonymous ? '匿名' : 
 							(item.user.nickname || item.user.username)
-						) | username
+						) 
 					}} </text>
 					<text 
 						class="mix-icon icon-shoucang_xuanzhongzhuangtai"
@@ -22,7 +22,7 @@
 					></text>
 				</view>
 				<text class="con">{{ item.content }}</text>
-				<view class="pic-wrap" v-if="item.images && item.images.length > 0" >
+				<!-- <view class="pic-wrap" v-if="item.images && item.images.length > 0" >
 					<image
 						v-for="(picItem, picIndex) in item.images"
 						:key="picIndex"
@@ -32,16 +32,16 @@
 						mode="aspectFill" 
 						@click="previewImage(picIndex, item.images)"
 					></image>
-				</view>
-				<view class="bot row">
+				</view> -->
+				<!-- <view class="bot row">
 					<text class="time">{{ item.add_time | date('Y-m-d H:i') }}</text>
 					<text v-if="item.sku" class="attr clamp">购买类型：{{ item.sku }}</text>
-				</view>
+				</view> -->
 			</view>
 		</view>
-		<view v-if="item.reply" class="replay-wrap">
+		<!-- <view v-if="item.reply" class="replay-wrap">
 			<text>卖家回复：{{ item.reply }}</text>
-		</view>
+		</view> -->
 	</view>
 </template>
 
@@ -53,25 +53,39 @@
 		name: 'MixRatingItem',
 		data() {
 			return {
-				
+				item: {},
 			};
 		},
 		props: {
-			item: {
+			items: {
 				type: Object,
 				default(){
+					console.log('props!!!')
 					return {}
 				}
 			}
 		},
-		filters: {
-			username(name){
-				if(name.length === 11){
-					return '****' + name.substr(7, 11)
-				}else{
-					return name;
-				}
-			}
+		// filters: {
+		// 	username(name){
+		// 		if(name.length === 11){
+		// 			return '****' + name.substr(7, 11)
+		// 		}else{
+		// 			return name;
+		// 		}
+		// 	}
+		// },
+		created: function() {
+			console.log('create!!!');
+			this.item = this.items;
+			this.item.anonymous = this.items.anonymous;
+			this.item.nickname = this.items.nickname;
+			this.item.avatar = this.items.avatar;
+			this.item.rating = this.items.rating;
+			this.item.content = this.items.content;
+			this.item.username = this.items.username;
+			console.log(items);
+			console.log(item);
+			console.log(item.content);
 		},
 		methods: {
 			previewImage(current, urls){
