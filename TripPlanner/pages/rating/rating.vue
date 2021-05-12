@@ -33,7 +33,7 @@
 		mixins: [MescrollMixin], 
 		data() {
 			return {
-				navs: [{name: '最新'}, {name: '好评'}, {name: '中评'}, {name: '差评'}, {name: '有图'}],
+				navs: [{name: '最新'}, {name: '好评'}, {name: '中评'}, {name: '差评'}],
 				navCurrent: 0, //当前tab
 				upOption:{
 					auto: false, // 是否自动加载

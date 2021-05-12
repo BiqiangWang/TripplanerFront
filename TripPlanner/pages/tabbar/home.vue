@@ -74,7 +74,19 @@
 			return {
 				navList: [],//导航列表
 				advertList: [],//广告列表
-				hotList: [],//热门推荐
+				hotList: [{
+							thumb: '../../static/logo.png',
+							title: '景点A'
+						},
+						{
+							thumb: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2544696267,4055569904&fm=26&gp=0.jpg',
+							title: '景点B'
+						},
+						{
+							thumb: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2544696267,4055569904&fm=26&gp=0.jpg',
+							title: '景点C'
+						}
+					],//热门推荐
 			}
 		},
 		computed: {

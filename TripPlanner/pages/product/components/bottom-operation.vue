@@ -5,13 +5,13 @@
 				<text class="mix-icon icon-home"></text>
 				<text class="tit">首页</text>
 			</view>
-			<view class="nav column center" @click="switchTab('/pages/tabbar/cart')">
+			<!-- <view class="nav column center" @click="switchTab('/pages/tabbar/cart')">
 				<text class="mix-icon icon-gouwuche"></text>
 				<text class="tit">购物车</text>
 				<view v-if="cartCount > 0" class="number center">
 					<text>{{ cartCount }}</text>
 				</view>
-			</view>
+			</view> -->
 			<view class="nav column center" :class="{active: is_fav === 1}" @click="changeFav">
 				<text class="mix-icon" :class="is_fav === 1 ? 'icon-shoucang' : 'icon-shoucang-1'"></text>
 				<text class="tit">收藏</text>
@@ -19,10 +19,10 @@
 		</view>
 		<view class="btn-group row">
 			<view class="btn center" @click="onOprationClick('cart')">
-				<text>加入购物车</text>
+				<text>写评价</text>
 			</view>
 			<view class="btn center" @click="onOprationClick('buy')">
-				<text>立即购买</text>
+				<text>加入路线</text>
 			</view>
 		</view>
 		

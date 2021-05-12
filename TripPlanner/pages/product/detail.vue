@@ -76,7 +76,7 @@
 			<!-- <rich-text :nodes="data.content"></rich-text> -->
 		</view>
 		<!-- 底部操作菜单 -->
-		<!-- <bottom-operation :infoData="data" @onOprationClick="onOprationClick"></bottom-operation> -->
+		<bottom-operation :infoData="data" @onOprationClick="onOprationClick"></bottom-operation>
 		<!-- loading -->
 		<mix-loading v-if="isLoading" :mask="true"></mix-loading>
 	</view>
