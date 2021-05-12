@@ -22,9 +22,9 @@
 					<mix-price-view :price="item.price" :size="34"></mix-price-view>
 					<text v-if="item.market_price > item.price" class="m-price">￥{{ item.market_price }}</text>
 					<view class="tags row">
-						<view class="tag center" v-if="!item.freight_template">
+						<!-- <view class="tag center" v-if="!item.freight_template">
 							<text>免邮费</text>
-						</view>
+						</view> -->
 						<!-- <view class="tag center orange">
 							<text>赠送75积分</text>
 						</view> -->
@@ -53,7 +53,7 @@
 				<text v-if="item.market_price > item.price" class="m-price">{{ item.market_price }}</text>
 				<view class="fill"></view>
 				<view class="tag center" v-if="!item.freight_template">
-					<text>免邮费</text>
+					<text>热门</text>
 				</view>
 			</view>
 		</view>
@@ -80,6 +80,16 @@
 				type: String,
 				default: 'column'
 			}
+		},
+		created: function(){
+			this.renderList = this.list.map(ele=>{
+				return ({
+					loaded: !!this.loaded,
+					thumb: ele.thumb,
+					title: ele.title
+				})
+			});
+			this.loaded = true;
 		},
 		watch: {
 			list(list){
