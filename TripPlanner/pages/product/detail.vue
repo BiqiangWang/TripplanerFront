@@ -21,7 +21,7 @@
 			<view class="sight_name">{{ sightname }}</view>
 			<view class="sight_introduction">{{ introduction }}</view>
 			<view class="sight_info"> {{info}}</view>
-			<button class="tocomment" @click="navTo('/pages/product/evaluate')">去评价>></button>
+			<!-- <button class="tocomment" @click="navTo('/pages/product/evaluate')">去评价>></button> -->
 			<!-- <view class="price-wrap row">
 				<mix-price-view :price="data.price" :size="40"></mix-price-view>
 				<text v-if="data.market_price > data.price" class="m-price">￥{{ data.market_price }}</text>
@@ -404,12 +404,12 @@
 		margin-left: 30rpx;
 	}
 
-	.tocomment {
+/* 	.tocomment {
 		margin-left: 450rpx;
 		top: -375rpx;
 		font-size: 32rpx;
 		color: #8f8f94;
-	}
+	} */
 
 	.introduce {
 		background: #fff;
