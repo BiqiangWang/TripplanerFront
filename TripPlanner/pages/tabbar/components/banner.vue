@@ -32,11 +32,11 @@
 			return {
 				current: 0,
 				list: [
-					{image: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2221182985,1875035766&fm=26&gp=0.jpg', 
+					{image: 'http://img1.qunarzz.com/sight/p0/1603/4e/4e7a704010c95d2490.water.jpg_280x200_6e3222e6.jpg', 
 					link: '/pages/product/detail'},
-					{image: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2544696267,4055569904&fm=26&gp=0.jpg', 
+					{image: 'http://img1.qunarzz.com/sight/p0/1512/96/96d55a05f5b087b090.water.jpg_280x200_48bccc2e.jpg', 
 					link: '/pages/product/detail'},
-					{image: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2573133749,533767849&fm=26&gp=0.jpg', 
+					{image: 'http://img1.qunarzz.com/sight/p0/1711/f4/f4c46492e38479ca3.img.jpg_280x200_40984876.jpg', 
 					link: '/pages/product/detail'},
 				]
 			};

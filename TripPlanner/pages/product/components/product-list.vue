@@ -17,7 +17,7 @@
 			</view>
 			<view class="right column">
 				<text class="title clamp">{{ item.title }}</text>
-				<text class="sales">月销 {{ item.sales || 0 }}</text>
+				<text class="sales">热度 {{ item.sales }}</text>
 				<view class="price-wrap row">
 					<mix-price-view :price="item.price" :size="34"></mix-price-view>
 					<text v-if="item.market_price > item.price" class="m-price">￥{{ item.market_price }}</text>
@@ -86,7 +86,9 @@
 				return ({
 					loaded: !!this.loaded,
 					thumb: ele.thumb,
-					title: ele.title
+					title: ele.title,
+					sales: ele.sales,
+					price:ele.price
 				})
 			});
 			this.loaded = true;

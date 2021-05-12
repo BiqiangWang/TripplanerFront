@@ -2,18 +2,18 @@
 	<view class="app">
 		<!-- 顶部栏 -->
 		<!-- #ifndef MP-WEIXIN -->
-		<page-header :showFillView="false"></page-header>
-		<mescroll-body
+		<!-- <page-header :showFillView="false"></page-header> -->
+		<!-- <mescroll-body
 			ref="mescrollRef" 
 			@init="mescrollInit" 
 			:top="headerHeight" 
 			@down="downCallback" 
 			:up="upOption" 
 			@up="loadHotList" 
-		>
+		> -->
 		<!-- #endif -->
 		<!-- #ifdef MP-WEIXIN -->
-		<page-header :showFillView="true"></page-header>
+		<!-- <page-header :showFillView="true"></page-header> -->
 		<!-- #endif -->
 			<!-- 头部轮播图 -->
 			<banner :list="carousel"></banner>
@@ -44,10 +44,10 @@
 			</view>
 			
 		<!-- #ifndef MP-WEIXIN -->
-		</mescroll-body>
+		<!-- </mescroll-body> -->
 		<!-- #endif -->
 		<!-- #ifdef MP-WEIXIN -->
-		<mix-load-more :status="loadingType"></mix-load-more>
+		<!-- <mix-load-more :status="loadingType"></mix-load-more> -->
 		<!-- #endif -->
 		
 		<!-- 首页优惠券弹窗 -->
@@ -75,16 +75,22 @@
 				navList: [],//导航列表
 				advertList: [],//广告列表
 				hotList: [{
-							thumb: '../../static/logo.png',
-							title: '景点A'
+							thumb: 'http://img1.qunarzz.com/sight/p0/2005/39/3979f1867defec4ea3.water.jpg_280x200_e1b47993.jpg',
+							title: '八达岭长城',
+							sales: '2307',
+							price: '40'
 						},
 						{
-							thumb: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2544696267,4055569904&fm=26&gp=0.jpg',
-							title: '景点B'
+							thumb: 'http://img1.qunarzz.com/tuan/team2/1507/2c/83e0e0e7ae082a.jpg_280x200_8c8e548a.jpg',
+							title: '东方明珠',
+							sales: '2307',
+							price: '69.9'
 						},
 						{
-							thumb: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2544696267,4055569904&fm=26&gp=0.jpg',
-							title: '景点C'
+							thumb: 'http://img1.qunarzz.com/sight/p64/201211/04/9173ff9f33e97f3193835fbb.jpg_280x200_9537b05a.jpg',
+							title: '杜甫草堂',
+							sales: '2307',
+							price: '47'
 						}
 					],//热门推荐
 			}
