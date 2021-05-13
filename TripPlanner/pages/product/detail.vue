@@ -117,21 +117,21 @@
 						background: "#ffffff",
 					},
 				],
-				sightid: 1,
-				sightname: '景点名称',
-				introduction: '这里是一段简单的景点介绍',
-				info: '景点信息啊',
+				sightname: '八达岭长城',
+				introduction: '一定要看那块“不到长城非好汉”碑',
+				info: '八达岭长城史称天下九塞之一，是万里长城的精华，在明长城中，独具代表性，八达岭景区以八达岭长城为主，兴建了八达岭饭店、全周影院和由江泽民主席亲笔题名的中国长城博物馆等功能齐全的现代化旅游服务设施。',
 				clicked_list: [false, false, false, false, false], //对应星星个数
 				currentSku: {},
 				data: {
+					_id:1,
 					images: [{
-							pic: '../../static/logo.png'
+							pic: 'http://img1.qunarzz.com/sight/p0/2005/39/3979f1867defec4ea3.water.jpg_280x200_e1b47993.jpg'
 						},
 						{
-							pic: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2544696267,4055569904&fm=26&gp=0.jpg'
+							pic: 'http://img1.qunarzz.com/sight/p0/1603/60/6020660bc5fc5c7d90.water.jpg_280x200_99b24de4.jpg'
 						},
 						{
-							pic: 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2544696267,4055569904&fm=26&gp=0.jpg'
+							pic: 'http://img1.qunarzz.com/sight/p0/1501/67/6772a7eb7a0ff986.water.jpg_280x200_7b6e4ffa.jpg'
 						}
 					],
 				},
@@ -147,9 +147,10 @@
 						},
 						rating: 5,
 						content: 'good',
+						date: "2021-5-1",
 					},
-					count: 1,
-					rating_ratio: 100
+					count: 3,
+					rating_ratio: 66
 				}, //评价
 				comment: '',
 			};
@@ -202,27 +203,27 @@
 				this.swiperCurrent = index;
 				this.titleNViewBackground = this.carouselList[index].background;
 			},
-			starIcon(item) {
-				if (item) {
-					return '&#xe601;'
-				} else {
-					return '&#xe602;'
-				}
-			},
-			//点击选择
-			choise(num) {
-				// num 为点击的星星在数组中的下标
-				this.clicked_list = [false, false, false, false, false];
-				num = num + 1;
-				for (let i = 0; i < num; i++) {
-					this.clicked_list[i] = true;
-				}
-				console.log(num);
+			// starIcon(item) {
+			// 	if (item) {
+			// 		return '&#xe601;'
+			// 	} else {
+			// 		return '&#xe602;'
+			// 	}
+			// },
+			// //点击选择
+			// choise(num) {
+			// 	// num 为点击的星星在数组中的下标
+			// 	this.clicked_list = [false, false, false, false, false];
+			// 	num = num + 1;
+			// 	for (let i = 0; i < num; i++) {
+			// 		this.clicked_list[i] = true;
+			// 	}
+			// 	console.log(num);
 
-			},
-			commitComment() {
-				console.log(this.comment);
-			},
+			// },
+			// commitComment() {
+			// 	console.log(this.comment);
+			// },
 			//加载评价
 			async loadRating() {
 				const res = await this.$request('rating', 'getDetailRating', {
@@ -359,9 +360,7 @@
 					uni.share(data);
 				})
 			},
-			commitComment() {
-				console.log(this.comment);
-			}
+
 		},
 	}
 </script>

@@ -22,6 +22,7 @@
 					></text>
 				</view>
 				<text class="con">{{ item.content }}</text>
+				<text class="date">{{item.date}}</text>
 				<!-- <view class="pic-wrap" v-if="item.images && item.images.length > 0" >
 					<image
 						v-for="(picItem, picIndex) in item.images"
@@ -164,6 +165,14 @@
 			padding: 20rpx 0;
 			line-height: 1.4;
 		}
+		.date{
+			color: #a7a7a7;
+			font-size: 24rpx;
+			padding: 20rpx 0;
+			line-height: 1.4;
+			margin-left: 450rpx;
+			margin-top: -65rpx;
+		}
 		.bot{
 			justify-content: space-between;
 			font-size: 24rpx;
@@ -203,4 +212,5 @@
 			line-height: 1.6;
 		}
 	}
+
 </style>

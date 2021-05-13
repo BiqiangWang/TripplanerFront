@@ -165,7 +165,7 @@
         ,{
             "path" : "pages/rating/rating",
             "style" : {
-				"navigationBarTitleText": "商品评价"
+				"navigationBarTitleText": "景点评价"
 			}
         }
 		,{

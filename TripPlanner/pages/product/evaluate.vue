@@ -27,7 +27,7 @@
 			<!-- <textarea class="mycommentinput" auto-height="true" placeholder="请输入您的评价" v-model="comment"></textarea> -->
 			<textarea class="mycommentinput" placeholder="你可以从交通,游玩路线,推荐活动等方面进行评价,分享你的体验 ~ ~" maxlength="100" v-model="comment"></textarea>
 			<!-- <image class="commitCommentButton" src="../../static/select.png" @click="commitComment"></image> -->
-			<button class="commitCommentButton2">发布</button>
+			<button class="commitCommentButton2" @click="commitComment()">发布</button>
 		</view>
 	</view>
 </template>
@@ -36,7 +36,7 @@
 	export default {
 		data(){
 			return{
-				sight_name:'景点名称',
+				sight_name:'八达岭长城',
 				clicked_list: [false, false, false, false, false], //对应星星个数
 				comment:'', 
 			}
@@ -117,7 +117,7 @@
 			url('https://at.alicdn.com/t/font_1254062_cqoky071dbi.ttf') format('truetype'),
 			url('https://at.alicdn.com/t/font_1254062_cqoky071dbi.svg#font_family') format('svg');
 	}
-	
+	 
 	.iconfont {
 		//与上方font-family 保持一致
 		font-family: "iconfont" !important;

@@ -2,15 +2,15 @@
 	<view class="app">
 		<!-- 顶部栏 -->
 		<!-- #ifndef MP-WEIXIN -->
-		<!-- <page-header :showFillView="false"></page-header> -->
-		<!-- <mescroll-body
+		<page-header :showFillView="false"></page-header>
+		<mescroll-body
 			ref="mescrollRef" 
 			@init="mescrollInit" 
 			:top="headerHeight" 
 			@down="downCallback" 
 			:up="upOption" 
 			@up="loadHotList" 
-		> -->
+		>
 		<!-- #endif -->
 		<!-- #ifdef MP-WEIXIN -->
 		<!-- <page-header :showFillView="true"></page-header> -->
@@ -44,7 +44,7 @@
 			</view>
 			
 		<!-- #ifndef MP-WEIXIN -->
-		<!-- </mescroll-body> -->
+		</mescroll-body>
 		<!-- #endif -->
 		<!-- #ifdef MP-WEIXIN -->
 		<!-- <mix-load-more :status="loadingType"></mix-load-more> -->
