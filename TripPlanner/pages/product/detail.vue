@@ -150,9 +150,11 @@
 						date: "2021-5-1",
 					},
 					count: 3,
-					rating_ratio: 66
+					rating_ratio: 66,
+					Sight:{}
 				}, //评价
 				comment: '',
+				GSIajax: 0,
 			};
 		},
 		onLoad(options) {
@@ -174,6 +176,9 @@
 			}
 		},
 		// #endif
+		created:function(){
+			this.getSightInfo()
+		},
 		methods: {
 			async loadData() {
 				this.swiperLength = this.carouselList.length;
@@ -359,6 +364,34 @@
 					}
 					uni.share(data);
 				})
+			},
+			getSightInfo() { // 获取景点信息
+			  var sightid=1100
+			  console.log("begin")
+			  this.GSIajax = new XMLHttpRequest()
+			  this.GSIajax.open('GET', 'http://47.102.212.4:8092/sight/getInfo?sightId=' + sightid, true)
+			  this.GSIajax.setRequestHeader('Authorization', 'Bearer ')
+			  this.GSIajax.onreadystatechange = this.DAsuccessfully
+			  this.GSIajax.send()
+			},
+			DAsuccessfully () { // 获取景点信息附属函数
+			  if (this.GSIajax.readyState === 4 && this.GSIajax.status === 200) {
+				  console.log(this.GSIajax.responseText)
+				  console.log(JSON.parse(this.GSIajax.responseText.Sight))
+				  console.log(this.GSIajax.responseText.Sight)
+				  this.sightname=JSON.parse(this.GSIajax.responseText).stname
+				  // console.log(this.sightname)
+			    // this.getLikesReplyArticleNum()
+			    // if (this.selectedPage >= this.maxpagenum) {
+			    //   this.selectedPage--
+			    // }
+			    // this.getArticleByPage()
+			    // if (JSON.parse(this.GSIajax.responseText).returnFlag === 1) {
+			    //   this.$alert('成功删除文章！', '提示', {
+			    //     confirmButtonText: '确定'
+			    //   })
+			    // }
+			  }
 			},
 
 		},
