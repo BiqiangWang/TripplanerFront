@@ -25,14 +25,15 @@
 				<view class="input-item">
 					<text class="tit">密码</text>
 					<view class="row">
-						<input v-model="code" password=true maxlength="18" placeholder="请输入密码"
+						<input v-model="password" password=true maxlength="18" placeholder="请输入密码"
 							placeholder-style="color: #909399" />
 						<!-- <mix-code :mobile="username" templateCode="SMS_194050994"></mix-code> -->
 					</view>
 				</view>
 			</view>
 			<mix-button ref="confirmBtn" text="登录" marginTop="60rpx" @onConfirm="login"></mix-button>
-			<button @click="navTo('/pages/auth/logon')" type="warn" plain="true" style="width: 305px; height: 44px; font-size: 16px; border-radius: 50px; color: #ff536f; position: relative; top: 10px; margin: 0 auto;">去注册</button>
+			<button @click="navTo('/pages/auth/logon')" type="warn" plain="true"
+				style="width: 305px; height: 44px; font-size: 16px; border-radius: 50px; color: #ff536f; position: relative; top: 10px; margin: 0 auto;">去注册</button>
 		</view>
 
 		<mix-loading v-if="isLoading"></mix-loading>
@@ -53,7 +54,7 @@
 				canUseAppleLogin: false,
 				agreement: true,
 				username: '',
-				code: '',
+				password: '',
 			}
 		},
 		onLoad() {
@@ -74,27 +75,44 @@
 				// 	url: '/user/login',
 				// 	params: {
 				// 		"name": this.username,
-				// 		"password": this.code
+				// 		"password": this.password
 				// 	}
 				// }).then(res => {
 				// 	console.log(res)
 				// }).catch(err => {
 				// 	console.log(err)
 				// })
-				this.$axios.post('/api/user/login', {
-					"name": this.username,
-					"password": this.code
-				}, {
-					emulateJSON: true
-				})
-				.then((response) => {
-					if (response.data == 200) {
-						console.log('success');
-						this.loginSuccessCallBack(0);
-					} else {
-						console.log('fail');
+				var _self = this;
+				uni.request({
+					url: "http://47.102.212.4:8090/user/login", //请求接口
+					data: {
+						name: this.username,
+						password: this.password,
+					},
+					method: 'GET',
+					success: (res) => { //请求成功后返回
+						console.log(res)
+						console.log(res.data)
+						if (res.statusCode === 200) {
+							if (res.data == "登录成功") {
+								uni.showToast({
+									title: '登录成功',
+									duration: 2000
+								});
+							} else {
+								uni.showToast({
+									title: '登录失败',
+									duration: 2000
+								});
+							}
+						} else {
+							uni.showToast({
+								title: '登录失败',
+								duration: 2000
+							});
+						}
 					}
-				})
+				});
 			},
 			//用户名密码登录
 			async login() {
@@ -105,9 +123,9 @@
 				}
 				const {
 					username,
-					code
+					password
 				} = this;
-				if (this.username == 'test' && this.code == 'test') {
+				if (this.username == 'test' && this.password == 'test') {
 					this.loginSuccessCallBack(0);
 					return;
 				}

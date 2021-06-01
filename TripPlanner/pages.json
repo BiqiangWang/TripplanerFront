@@ -49,6 +49,14 @@
 				"backgroundColorBottom":"#fff"
 			}
 		}
+		,{
+		    "path" : "pages/route/routeInfo",
+		    "style" : {
+				"navigationBarTitleText": "路线详情",
+				"backgroundColorTop":"#fff",
+				"backgroundColorBottom":"#fff"
+			}
+		}
         ,{
             "path" : "pages/tabbar/user",
             "style" : {

@@ -18,7 +18,7 @@
 						<text class="tit">{{ item.name }}</text>
 					</view>
 				</view> -->
-				<product-list ref="productList" :list="hotList"></product-list>
+				<product-list ref="productList" :list="hotList" listType='row'></product-list>
 			</scroll-view>
 			
 		</view>

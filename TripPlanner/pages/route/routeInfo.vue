@@ -13,7 +13,7 @@
 				<uni-swipe-action-item v-for="(item, index) in list" :key="item._id" :options="options" @click="remove($event,index)" >
 					<view class="item row">
 						<text class="mix-icon icon-xuanzhong" :class="{active: item.checked}" @click.stop.prevent="checkRow(item)"></text>
-						<view class="image-wrapper lazyload lazypic" :class="{loaded: item.loaded}" @click="navTo('/pages/route/routeInfo?id='+item.product_id)">
+						<view class="image-wrapper lazyload lazypic" :class="{loaded: item.loaded}" @click="navTo('/pages/product/detail?id='+item.product_id)">
 							<image :src="item.image" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)" ></image>
 						</view>
 						<view class="right column">
@@ -73,12 +73,12 @@
 		<!-- 加载 -->
 		<!-- <mix-loading v-if="isLoading" :type="loaded ? 1 : 2" :mask="true"></mix-loading> -->
 		<!-- 确认对话框 -->
-		<mix-modal ref="mixModal" title="删除提示" text="真的要狠心清空吗" confirmText="清空" @onConfirm="clear"></mix-modal>
+		<mix-modal ref="mixModal" title="删除提示" text="挑了这么久，真的要狠心清空吗" confirmText="清空" @onConfirm="clear"></mix-modal>
 	</view>
 </template>
 
 <script>
-	import tabbarMixin from './mixin/tabbar' 
+	import tabbarMixin from '@/pages/tabbar/mixin/tabbar' 
 	import MescrollMixin from "@/components/mescroll-uni/mescroll-mixins.js";
 	export default {
 		mixins: [tabbarMixin, MescrollMixin], 

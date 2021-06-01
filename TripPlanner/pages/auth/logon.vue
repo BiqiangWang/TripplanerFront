@@ -33,7 +33,7 @@
 						<input
 							v-model="code"
 							password=true
-							maxlength="6"
+							maxlength="18"
 							placeholder="请输入密码"
 							placeholder-style="color: #909399"
 						/>
@@ -46,7 +46,7 @@
 						<input
 							v-model="recode"
 							password=true
-							maxlength="6"
+							maxlength="18"
 							placeholder="请再次输入密码"
 							placeholder-style="color: #909399"
 						/>
