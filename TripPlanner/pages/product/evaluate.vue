@@ -1,9 +1,10 @@
 <template>
 	<view class="app">
 		<view class="zhanwei"></view>
-		<view class="btn center" @click="navTo('/pages/product/detail')">
+		<!-- <view class="btn center" @click="navTo('/pages/product/detail')">
 			<text class="mix-icon icon-xiangzuo"></text>
-		</view>
+		</view> -->
+		<pageHeader ref="pageHeader"></pageHeader>
 		<view class="headernote">- 写下真实体验，帮助万千用户选择 -</view>
 		<view class="sight_name">{{sight_name}}</view>
 		<!-- 打分 -->
@@ -25,7 +26,10 @@
 		</view>
 		<view class="commentbox">
 			<!-- <textarea class="mycommentinput" auto-height="true" placeholder="请输入您的评价" v-model="comment"></textarea> -->
-			<textarea class="mycommentinput" placeholder="你可以从交通,游玩路线,推荐活动等方面进行评价,分享你的体验 ~ ~" maxlength="100" v-model="comment"></textarea>
+			<!-- <textarea class="mycommentinput" placeholder="你可以从交通,游玩路线,推荐活动等方面进行评价,分享你的体验 ~ ~" maxlength="100" v-model="comment"></textarea> -->
+			<view class="textarea-wrap">
+				<textarea maxlength="100" v-model="comment" placeholder="你可以从交通,游玩路线,推荐活动等方面进行评价,分享你的体验 ~ ~" placeholder-style="color:#999" /></textarea>
+			</view>
 			<!-- <image class="commitCommentButton" src="../../static/select.png" @click="commitComment"></image> -->
 			<button class="commitCommentButton2" @click="commitComment()">发布</button>
 		</view>
@@ -33,9 +37,15 @@
 </template>
 
 <script>
+	import pageHeader from './components/detail-page-header' //页面头
 	export default {
+		components: {
+			pageHeader,
+		},
 		data(){
 			return{
+				username:"哈哈",
+				sight_id:1100,
 				sight_name:'八达岭长城',
 				clicked_list: [false, false, false, false, false], //对应星星个数
 				comment:'', 
@@ -55,9 +65,62 @@
 				console.log(num);
 	
 			},
-			commitComment() {
-				console.log(this.comment);
+			// commitComment() {
+			// 	console.log(this.comment);
+			// 	this.CCajax = new XMLHttpRequest()
+			// 	this.CCajax.open('GET', 'http://47.102.212.4:8092/sight/addcomment?sightId=' + this.sight_id + '&text=' + this.comment +'&username=' + this.username, true)
+			// 	this.CCajax.setRequestHeader('Authorization', 'Bearer ')
+			// 	this.CCajax.onreadystatechange = this.CCsuccessfully
+			// 	this.CCajax.send()
+			// },
+			// CCsuccessfully () { // 获取景点信息附属函数
+			//   if (this.CCajax.readyState === 4 && this.CCajax.status === 200) {
+			// 	  console.log(this.CCajax.responseText)
+			// 	  if(this.CCajax.responseText=="评论成功"){
+			// 		  uni.showToast({
+			// 		  	title: '评价成功',
+			// 		  	duration: 2000
+			// 		  });
+					  
+			// 	  }
+			//   }
+			// },
+			commitComment(){
+			   var _self = this;
+			   uni.request({
+				   url: "http://47.102.212.4:8092/sight/addcomment", //请求接口
+				   data:{
+					   sightId: this.sight_id,
+					   text: this.comment,
+					   username: this.username,
+				   },
+				   method: 'GET',
+				success: (res) => {//请求成功后返回
+						console.log(res)
+						console.log(res.data)
+						if (res.statusCode === 200){
+							if(res.data=="评论成功"){
+								  uni.showToast({
+									title: '评价成功',
+									duration: 2000
+								  });					  
+							}else{
+								uni.showToast({
+									title: '评价失败',
+									duration: 2000
+								});		
+							}
+						}else{
+							uni.showToast({
+								title: '评价失败',
+								duration: 2000
+							});		
+						}
+							
+				   }
+				});
 			},
+			
 		}
 	}
 </script>
@@ -171,7 +234,7 @@
 		height: auto;
 		background-color: #FFFFFF;
 	}
-	.mycommentinput{
+/* 	.mycommentinput{
 		background-color: #ffffff;
 		height: 400rpx;
 		width: 90%;
@@ -179,6 +242,21 @@
 		margin-left: 5%;
 		border-radius: 5px;
 		border:solid 1px #ccc;
+	} */
+	.textarea-wrap{
+		margin-left: 5%;
+		width: 90%;
+		padding: 20rpx;
+		background-color: #f7f7f7;
+		border-radius: 12rpx;
+		
+		textarea{
+			width: 100%;
+			height: 200rpx;
+			font-size:30rpx;
+			color: #333;
+			line-height: 1.4;
+		}
 	}
 	.commitCommentButton{
 		width: 60rpx;

@@ -19,8 +19,8 @@
 					</view>
 				</view>
 			</view>
-			<view v-if="list.length > 0" class="bot-btn-wrap fix-bot">
-				<mix-button text="新增收货地址" icon="icon-jia2" :iconSize="36" :isConfirm="false" @onConfirm="navTo('manage')"></mix-button>
+			<view v-if="list.length >= 0" class="bot-btn-wrap fix-bot">
+				<mix-button text="新增收货地址" icon="icon-jia2" :iconSize="36" :isConfirm="false" @onConfirm="navTo('limit')"></mix-button>
 			</view>
 		</view>
 		
@@ -36,14 +36,26 @@
 	export default {
 		data() {
 			return {
-				list: []
+				loaded:true,
+				isLoading:false,
+				list: [
+					{
+						name:"飞飞",
+						mobile:13812345678,
+						is_default:true,
+						address:{
+							address:"同济大学嘉定校区",
+							room:"19号楼",
+						}
+					},
+				]
 			}
 		},
-		onLoad(options) {
-			this.isChoose = !!options.choose;
-			this.choosedId = options.id;
-			this.loadData();
-		},
+		// onLoad(options) {
+		// 	this.isChoose = !!options.choose;
+		// 	this.choosedId = options.id;
+		// 	this.loadData();
+		// },
 		methods: {
 			async loadData(){
 				const res = await this.$request('address', 'get', {}, {
@@ -82,7 +94,8 @@
 			showDelModal(index){
 				this.curIndex = index;
 				this.$refs.mixModal.open();
-			}
+			},
+			
 		}
 	}
 </script>
