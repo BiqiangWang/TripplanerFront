@@ -280,6 +280,12 @@
 				"navigationStyle":"custom"
 			}
         }
+        ,{
+            "path" : "pages/address/limit",
+            "style" : {
+                "navigationBarTitleText": "路线规划"
+            }     
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

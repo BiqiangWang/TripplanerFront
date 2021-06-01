@@ -16,18 +16,31 @@
 				<text class="num">{{swiperLength}}</text>
 			</view>
 		</view> -->
-		<mix-swiper :list="data.images"></mix-swiper>
+		<mix-swiper v-if="hackReset" :list="data.images"></mix-swiper>
 		<view class="introduce column">
 			<view class="sight_name">{{ sightname }}</view>
-			<view class="sight_introduction">{{ introduction }}</view>
-			<view class="sight_info"> {{info}}</view>
-			<!-- <button class="tocomment" @click="navTo('/pages/product/evaluate')">去评价>></button> -->
-			<!-- <view class="price-wrap row">
-				<mix-price-view :price="data.price" :size="40"></mix-price-view>
-				<text v-if="data.market_price > data.price" class="m-price">￥{{ data.market_price }}</text>
-				<text v-if="loaded && !data.freight_template" class="tag">免邮费</text>
+			<view class="info_container">
+				<view class="scores">{{ score }}分</view>
+				<view class="visitnum">{{ visitnumber }}条评价</view>
+				<view class="level">5A景区</view>
 			</view>
-			<view class="bot row">
+			<view class="introduction_container">
+				<image class="introduction_logo" src="../../static/tplaner/tishi.png"></image>
+				<view class="sight_introduction">{{ introduction }}</view>
+			</view>
+			<view class="address_container">
+				<image class="address_logo" src="../../static/tplaner/map.png"></image>
+				<view class="sight_address">{{ address }}</view>
+			</view>
+			<view class="price-wrap row">
+				<mix-price-view :price="data.price" :size="40" style="margin-left: 20rpx;"></mix-price-view>
+				<text v-if="data.market_price > data.price" class="m-price">￥{{ data.market_price }}</text>
+				<text class="tag">人均</text>
+				<!-- <view class="particulars">
+					<uni-link href="http://piao.qunar.com/ticket/detail_2602391235.html?st=a3clM0QlRTUlQjklQkYlRTUlQjclOUUlMjZpZCUzRDIxMzQ3NCUyNnR5cGUlM0QwJTI2aWR4JTNEMjclMjZxdCUzRHJlZ2lvbiUyNmFwayUzRDIlMjZzYyUzRFdXVyUyNnVyJTNEJUU1JUI5JUJGJUU1JUI3JTlFJTI2bHIlM0QlRTQlQjglOEElRTYlQjUlQjc%3D#from=mpshouye_hotcity" text="查看详情" showUnderLine="false" color="#ff536f" copyTips="这是复制时显示的提示语" :showUnderLine="true" ></uni-link>
+				</view> -->
+			</view>
+			<!-- <view class="bot row">
 				<text class="fill">销量: {{ data.sales || 0 }}</text>
 				<text class="fill">库存: {{ data.stock || 0 }}</text>
 				<text class="fill">浏览量: {{ data.look_num || 0 }}</text>
@@ -101,6 +114,7 @@
 		},
 		data() {
 			return {
+				hackReset:true,
 				titleNViewBackground: '',
 				swiperCurrent: 0,
 				swiperLength: 0,
@@ -117,22 +131,22 @@
 						background: "#ffffff",
 					},
 				],
+				sightid:1100,
 				sightname: '八达岭长城',
+				score:4.5,
+				visitnumber:366,
 				introduction: '一定要看那块“不到长城非好汉”碑',
+				address:'重庆',
 				info: '八达岭长城史称天下九塞之一，是万里长城的精华，在明长城中，独具代表性，八达岭景区以八达岭长城为主，兴建了八达岭饭店、全周影院和由江泽民主席亲笔题名的中国长城博物馆等功能齐全的现代化旅游服务设施。',
 				clicked_list: [false, false, false, false, false], //对应星星个数
 				currentSku: {},
 				data: {
 					_id:1,
+					price:110,
+					market_price:0,
 					images: [{
 							pic: 'http://img1.qunarzz.com/sight/p0/2005/39/3979f1867defec4ea3.water.jpg_280x200_e1b47993.jpg'
 						},
-						{
-							pic: 'http://img1.qunarzz.com/sight/p0/1603/60/6020660bc5fc5c7d90.water.jpg_280x200_99b24de4.jpg'
-						},
-						{
-							pic: 'http://img1.qunarzz.com/sight/p0/1501/67/6772a7eb7a0ff986.water.jpg_280x200_7b6e4ffa.jpg'
-						}
 					],
 				},
 				ratingData: {
@@ -150,7 +164,8 @@
 						date: "2021-5-1",
 					},
 					count: 3,
-					rating_ratio: 66
+					rating_ratio: 66,
+					Sight:{}
 				}, //评价
 				comment: '',
 			};
@@ -174,6 +189,9 @@
 			}
 		},
 		// #endif
+		created:function(){
+			this.getSightInfo()
+		},
 		methods: {
 			async loadData() {
 				this.swiperLength = this.carouselList.length;
@@ -360,6 +378,38 @@
 					uni.share(data);
 				})
 			},
+			getSightInfo(){
+			   var _self = this;
+			   uni.request({
+				   url: "http://47.102.212.4:8092/sight/getInfo", //请求接口
+				   data:{
+					   sightId: this.sightid,
+				   },
+				   method: 'GET',
+				success: (res) => {//请求成功后返回
+						console.log(res.data.data.sightInfo.Sight)
+						if (res.statusCode === 200){
+							this.sightname = res.data.data.sightInfo.Sight.stname;
+							this.introduction = res.data.data.sightInfo.Sight.desc;
+							this.address = res.data.data.sightInfo.Sight.address;
+							this.visitnumber = res.data.data.sightInfo.Sight.visitnum;
+							this.score = res.data.data.sightInfo.Sight.starlevel.substr(0,3);
+							this.data.price = res.data.data.sightInfo.Sight.price;
+							this.data.images[0].pic = res.data.data.sightInfo.Sight.picUrl;
+							this.hackReset = false;
+							  this.$nextTick(() => {
+							       this.hackReset = true;
+							  })
+						}else{
+							uni.showToast({
+								title: '信息请求错误',
+								duration: 2000
+							});		
+						}
+							
+				   }
+				});
+			},
 
 		},
 	}
@@ -385,23 +435,81 @@
 
 	/* 标题简介 */
 	.sight_name {
-		font-size: 36rpx;
+		font-size: 44rpx;
 		margin-left: 30rpx;
 		margin-bottom: 20rpx;
+		font-weight: 700px;
 	}
-
+	.info_container{
+		width: 100%;
+		display: flex;
+		margin-bottom: 40rpx;
+	}
+	.scores{
+		background-color: #0276f1;
+		color: #FFFFFF;
+		border-top-left-radius:25rpx;
+		border-bottom-left-radius:25rpx;
+		margin-left: 40rpx;
+		font-size: 28rpx;
+		width: 90rpx;
+		text-align: center;
+	}
+	.visitnum{
+		background-color: #e5f1fe;
+		color: #6faadb;
+		border-top-right-radius:25rpx;
+		border-bottom-right-radius:25rpx;
+		font-size: 28rpx;
+		width: 160rpx;
+		text-align: center;
+	}
+	.level{
+		background-color: #fdf2e4;
+		color: #ecb47b;
+		border-radius: 25rpx;
+		font-size: 28rpx;
+		width: 130rpx;
+		text-align: center;
+		margin-left: 30rpx;
+	}
+	.introduction_container{
+		width: 100%;
+		display: flex;
+	}
+	.introduction_logo{
+		width: 40rpx;
+		height: 40rpx;
+		margin-left: 20rpx;
+	}
 	.sight_introduction {
 		font-size: 30rpx;
-		margin-left: 30rpx;
+		margin-left: 20rpx;
 		margin-bottom: 40rpx;
 		color: #8f8f94;
 	}
+	.address_container{
+		width: 100%;
+		display: flex;
+	}
+	.address_logo{
+		width: 40rpx;
+		height: 40rpx;
+		margin-left: 20rpx;
+	}
+	.sight_address{
+		font-size: 30rpx;
+		margin-left: 20rpx;
+		margin-bottom: 40rpx;
+		color: #8f8f94;
+	}
+	
 
-	.sight_info {
+/* 	.sight_info {
 		height: 200rpx;
 		font-size: 32rpx;
 		margin-left: 30rpx;
-	}
+	} */
 
 /* 	.tocomment {
 		margin-left: 450rpx;

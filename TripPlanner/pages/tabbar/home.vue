@@ -17,19 +17,6 @@
 		<!-- #endif -->
 			<!-- 头部轮播图 -->
 			<banner :list="carousel"></banner>
-			<!-- 分类 -->
-			<!-- <view class="cate-section">
-				<view class="item" v-for="item in navList" :key="item._id" @click="navTo(item.link)">
-					<image class="icon" :src="item.image"></image>
-					<text>{{ item.name }}</text>
-				</view>
-			</view> -->
-			<!-- 中部广告位 -->
-			<!-- <view class="mid-ad" @click="navTo(midAdvert.link)">
-				<image :src="midAdvert.image" mode="scaleToFill"></image>
-			</view> -->
-			
-			<!-- 热门推荐 -->
 			<view class="hot-wrap" :class="{show: loaded}">
 				<view class="floor-header row" @click="navTo('/pages/product/list?isHot=1')">
 					<image class="icon" src="/static/icon/hot.png"></image>
