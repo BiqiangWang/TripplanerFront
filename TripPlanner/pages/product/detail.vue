@@ -22,7 +22,7 @@
 			<view class="info_container">
 				<view class="scores">{{ score }}分</view>
 				<view class="visitnum">{{ visitnumber }}条评价</view>
-				<view class="level">5A景区</view>
+				<view class="level">{{ sightlevel }}</view>
 			</view>
 			<view class="introduction_container">
 				<image class="introduction_logo" src="../../static/tplaner/tishi.png"></image>
@@ -135,9 +135,9 @@
 				sightname: '八达岭长城',
 				score:4.5,
 				visitnumber:366,
+				sightlevel:"",
 				introduction: '一定要看那块“不到长城非好汉”碑',
 				address:'重庆',
-				info: '八达岭长城史称天下九塞之一，是万里长城的精华，在明长城中，独具代表性，八达岭景区以八达岭长城为主，兴建了八达岭饭店、全周影院和由江泽民主席亲笔题名的中国长城博物馆等功能齐全的现代化旅游服务设施。',
 				clicked_list: [false, false, false, false, false], //对应星星个数
 				currentSku: {},
 				data: {
@@ -191,6 +191,7 @@
 		// #endif
 		created:function(){
 			this.getSightInfo()
+			this.getcomment()
 		},
 		methods: {
 			async loadData() {
@@ -395,6 +396,13 @@
 							this.visitnumber = res.data.data.sightInfo.Sight.visitnum;
 							this.score = res.data.data.sightInfo.Sight.starlevel.substr(0,3);
 							this.data.price = res.data.data.sightInfo.Sight.price;
+							if(this.data.price == ""){
+								this.data.price = 0;
+							}
+							this.sightlevel = res.data.data.sightInfo.Sight.level;
+							if(this.sightlevel == "无"){
+								this.sightlevel = "普通景区";
+							}
 							this.data.images[0].pic = res.data.data.sightInfo.Sight.picUrl;
 							this.hackReset = false;
 							  this.$nextTick(() => {
@@ -410,6 +418,27 @@
 				   }
 				});
 			},
+			getcomment(){
+				var _self = this;
+				uni.request({
+				   url: "http://47.102.212.4:8092/sight/getComment", //请求接口
+				   data:{
+					   sightId: this.sightid,
+				   },
+				   method: 'GET',
+				success: (res) => {//请求成功后返回
+						if (res.statusCode === 200){
+							console.log(res.data)
+						}else{
+							uni.showToast({
+								title: '信息请求错误',
+								duration: 2000
+							});		
+						}
+							
+				   }
+				});
+			}
 
 		},
 	}
@@ -469,7 +498,7 @@
 		color: #ecb47b;
 		border-radius: 25rpx;
 		font-size: 28rpx;
-		width: 130rpx;
+		width: 140rpx;
 		text-align: center;
 		margin-left: 30rpx;
 	}
@@ -502,6 +531,7 @@
 		margin-left: 20rpx;
 		margin-bottom: 40rpx;
 		color: #8f8f94;
+		width: 600rpx;
 	}
 	
 
