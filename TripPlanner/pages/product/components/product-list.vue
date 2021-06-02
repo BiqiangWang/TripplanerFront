@@ -88,7 +88,8 @@
 					thumb: ele.thumb,
 					title: ele.title,
 					sales: ele.sales,
-					price:ele.price
+					price: ele.price,
+					_id: ele.id
 				})
 			});
 			this.loaded = true;

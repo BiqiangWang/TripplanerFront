@@ -65,19 +65,22 @@
 							thumb: 'http://img1.qunarzz.com/sight/p0/2005/39/3979f1867defec4ea3.water.jpg_280x200_e1b47993.jpg',
 							title: '八达岭长城',
 							sales: '2307',
-							price: '40'
+							price: '40',
+							id: '22'
 						},
 						{
 							thumb: 'http://img1.qunarzz.com/tuan/team2/1507/2c/83e0e0e7ae082a.jpg_280x200_8c8e548a.jpg',
 							title: '东方明珠',
-							sales: '2307',
-							price: '69.9'
+							sales: '3601',
+							price: '69.9',
+							id: '99'
 						},
 						{
 							thumb: 'http://img1.qunarzz.com/sight/p64/201211/04/9173ff9f33e97f3193835fbb.jpg_280x200_9537b05a.jpg',
 							title: '杜甫草堂',
-							sales: '2307',
-							price: '47'
+							sales: '542',
+							price: '47',
+							id:'541'
 						}
 					],//热门推荐
 			}
