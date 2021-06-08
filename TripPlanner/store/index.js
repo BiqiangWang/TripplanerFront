@@ -38,17 +38,17 @@ const store = new Vuex.Store({
 			uni.setStorageSync('uniIdToken', token);
 			uni.setStorageSync('tokenExpired', tokenExpired);
 			this.dispatch('getUserInfo'); //更新用户信息
-			this.dispatch('getCartCount');//更新购物车数量
-			uni.$emit('refreshCart');//刷新购物车
-			this.dispatch('getOrderCount'); //更新订单数量
+			//this.dispatch('getCartCount');//更新购物车数量
+			//uni.$emit('refreshCart');//刷新购物车
+			//this.dispatch('getOrderCount'); //更新订单数量
 		},
 		//退出登录
 		logout(state){
 			state.token = '';
 			uni.removeStorageSync('uniIdToken');
-			this.dispatch('getCartCount');//更新购物车数量
-			uni.$emit('refreshCart');//刷新购物车
-			this.dispatch('getOrderCount'); //更新订单数量
+			//this.dispatch('getCartCount');//更新购物车数量
+			//uni.$emit('refreshCart');//刷新购物车
+			//this.dispatch('getOrderCount'); //更新订单数量
 			setTimeout(()=>{
 				state.userInfo = {};
 			}, 1100)
@@ -57,16 +57,24 @@ const store = new Vuex.Store({
 	actions: {
 		//更新用户信息
 		async getUserInfo({state, commit}){
-			const res = await request('user', 'get', {}, {
-				checkAuthInvalid: false
+			var _self = this;
+			uni.request({
+				url: "http://47.102.212.4:8090/user/getuserInfo",
+				method: 'GET',
+				success: (res) => { //请求成功后返回
+					console.log(res)
+					if (res.statusCode === 200) {
+						if (res.data.success) {
+							const userInfo = res.data.data.userInfo.User;
+							console.log(userInfo);
+							commit('setStateAttr', {
+								key: 'userInfo',
+								val: userInfo
+							})
+						}
+					}
+				}
 			});
-			if(res.status === 1){
-				const userInfo = res.data;
-				commit('setStateAttr', {
-					key: 'userInfo',
-					val: userInfo
-				})
-			}
 		},
 		//更新购物车数量
 		async getCartCount({state, commit}){

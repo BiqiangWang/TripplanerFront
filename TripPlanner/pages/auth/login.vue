@@ -69,19 +69,27 @@
 					uni.navigateBack();
 				}, 1000)
 			},
+			getUserInfo(){
+				var _self = this;
+				uni.request({
+					url: "http://47.102.212.4:8090/user/getuserInfo",
+					method: 'GET',
+					success: (res) => { //请求成功后返回
+						console.log(res)
+						if (res.statusCode === 200) {
+							if (res.data.success) {
+								const userInfo = res.data.data.userInfo.User;
+								console.log(userInfo);
+								// commit('setStateAttr', {
+								// 	key: 'userInfo',
+								// 	val: userInfo
+								// })
+							}
+						}
+					}
+				});
+			},
 			postLogin() {
-				// this.$axios({
-				// 	method: 'POST',
-				// 	url: '/user/login',
-				// 	params: {
-				// 		"name": this.username,
-				// 		"password": this.password
-				// 	}
-				// }).then(res => {
-				// 	console.log(res)
-				// }).catch(err => {
-				// 	console.log(err)
-				// })
 				var _self = this;
 				uni.request({
 					url: "http://47.102.212.4:8090/user/login", //请求接口
@@ -89,16 +97,19 @@
 						name: this.username,
 						password: this.password,
 					},
-					method: 'GET',
+					header:{'content-type':'application/x-www-form-urlencoded'},
+					method: 'POST',
 					success: (res) => { //请求成功后返回
 						console.log(res)
 						console.log(res.data)
 						if (res.statusCode === 200) {
-							if (res.data == "登录成功") {
+							if (res.data.success) {
 								uni.showToast({
 									title: '登录成功',
-									duration: 2000
+									duration: 2000,
 								});
+								this.getUserInfo();
+								this.loginSuccessCallBack(0);
 							} else {
 								uni.showToast({
 									title: '登录失败',
@@ -129,6 +140,7 @@
 					this.loginSuccessCallBack(0);
 					return;
 				}
+				this.postLogin();
 				// if(!checkStr(username, 'mobile')){
 				// 	this.$util.msg('请输入正确的手机号码');
 				// 	this.$refs.confirmBtn.stop();
@@ -148,7 +160,6 @@
 				// 	this.$util.msg(res.msg);
 				// }
 
-				this.postLogin();
 
 				// this.loginSuccessCallBack(0);
 			},
