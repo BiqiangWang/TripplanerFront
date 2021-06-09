@@ -21,8 +21,9 @@
 			<view class="sight_name">{{ sightname }}</view>
 			<view class="info_container">
 				<view class="scores">{{ score }}分</view>
-				<view class="visitnum">{{ visitnumber }}条评价</view>
+				<view class="visitnum">{{ visitnumber }}人玩过</view>
 				<view class="level" v-if="sightlevel!=''">{{ sightlevel }}</view>
+				<view class="sighttag" v-if="sighttag!=''">{{ sighttag }}</view>
 			</view>
 			<view class="introduction_container">
 				<image class="introduction_logo" src="../../static/tplaner/tishi.png"></image>
@@ -31,6 +32,7 @@
 			<view class="address_container">
 				<image class="address_logo" src="../../static/tplaner/map.png"></image>
 				<view class="sight_address">{{ address }}</view>
+				<image class="addressto_logo" src="../../static/tplaner/arrow-right.png" @click="viewmap"></image>
 			</view>
 			<view class="price-wrap row">
 				<mix-price-view :price="data.price" :size="40" style="margin-left: 20rpx;"></mix-price-view>
@@ -47,31 +49,6 @@
 			</view> -->
 		</view>
 
-		<!-- 打分 -->
-		<!-- <view class="scoreBox">
-			<text class="scoreTitle">为该景点打分：</text>
-			<view class="uni-padding-wrap uni-common-mt star">
-				<view class="uni-flex uni-row">
-					<view :class="{starActive:item}" @click="choise(index)" class="flex-item iconfont"
-						v-for="(item,index) in clicked_list">
-						<view v-if="item" class="starIcon">
-							&#xe601;
-						</view>
-						<view v-else class="starIcon">
-							&#xe602;
-						</view>
-					</view>
-				</view>
-			</view>
-		</view> -->
-		<!-- 		<view class="commentbox">
-			<textarea class="mycommentinput" auto-height="true" placeholder="请输入您的评价" v-model="comment"></textarea>
-			<textarea class="mycommentinput" placeholder="请输入您的评价" maxlength="50" v-model="comment"></textarea>
-			<image class="commitCommentButton" src="../../static/select.png" @click="commitComment"></image>
-		</view> -->
-
-
-		<!-- 评价 -->
 		<view id="rating" class="rating-wrap column" :class="{'no-data': !ratingData.data}">
 			<view class="e-header" @click="navTo('/pages/rating/rating?id='+data._id)">
 				<text class="tit">景点评价</text>
@@ -136,6 +113,7 @@
 				score:4.5,
 				visitnumber:366,
 				sightlevel:"",
+				sighttag:"",
 				introduction: '一定要看那块“不到长城非好汉”碑',
 				address:'重庆',
 				clicked_list: [false, false, false, false, false], //对应星星个数
@@ -384,7 +362,6 @@
 				})
 			},
 			getSightInfo(){
-			   var _self = this;
 			   uni.request({
 				   url: "http://47.102.212.4:8092/sight/getInfo", //请求接口
 				   data:{
@@ -397,8 +374,8 @@
 							this.sightname = res.data.data.sightInfo.Sight.stname;
 							this.introduction = res.data.data.sightInfo.Sight.desc;
 							this.address = res.data.data.sightInfo.Sight.address;
-							this.visitnumber = res.data.data.sightInfo.Sight.visitnum;
-							this.score = res.data.data.sightInfo.Sight.starlevel.substr(0,3);
+							this.visitnumber = res.data.data.sightInfo.Sight.visitnum.slice(0,-2);
+							this.score = res.data.data.sightInfo.Sight.starlevel.substr(0,4);
 							this.data.price = res.data.data.sightInfo.Sight.price;
 							if(this.data.price == ""){
 								this.data.price = 0;
@@ -407,6 +384,7 @@
 							if(this.sightlevel == "无"){
 								this.sightlevel = "普通景区";
 							}
+							this.sighttag = res.data.data.sightInfo.Sight.tag;
 							this.data.images[0].pic = res.data.data.sightInfo.Sight.picUrl;
 							this.hackReset = false;
 							  this.$nextTick(() => {
@@ -423,7 +401,6 @@
 				});
 			},
 			getcomment(){
-				var _self = this;
 				uni.request({
 				   url: "http://47.102.212.4:8092/sight/getComment", //请求接口
 				   data:{
@@ -435,13 +412,20 @@
 							console.log(res.data.data.commentlist)
 						}else{
 							uni.showToast({
-								title: '信息请求错误',
+								title: '评论请求错误',
 								duration: 2000
 							});		
 						}
 							
 				   }
 				});
+			},
+			viewmap(){
+				let url = '/pages/chooseAddress/index';
+				// if(this.data.address.title){
+				// 	url += `?data=${JSON.stringify(this.data.address)}`; 
+				// }
+				this.navTo(url);
 			}
 
 		},
@@ -485,7 +469,7 @@
 		border-bottom-left-radius:25rpx;
 		margin-left: 40rpx;
 		font-size: 28rpx;
-		width: 90rpx;
+		width: 100rpx;
 		text-align: center;
 	}
 	.visitnum{
@@ -494,7 +478,7 @@
 		border-top-right-radius:25rpx;
 		border-bottom-right-radius:25rpx;
 		font-size: 28rpx;
-		width: 160rpx;
+		width: 170rpx;
 		text-align: center;
 	}
 	.level{
@@ -503,6 +487,15 @@
 		border-radius: 25rpx;
 		font-size: 28rpx;
 		width: 140rpx;
+		text-align: center;
+		margin-left: 30rpx;
+	}
+	.sighttag{
+		background-color: rgba(225, 37, 27, 0.08);
+		color: #ff536f;
+		border-radius: 25rpx;
+		font-size: 28rpx;
+		width: 160rpx;
 		text-align: center;
 		margin-left: 30rpx;
 	}
@@ -536,6 +529,11 @@
 		margin-bottom: 40rpx;
 		color: #8f8f94;
 		width: 600rpx;
+	}
+	.addressto_logo{
+		width: 40rpx;
+		height: 40rpx;
+		margin-left: 20rpx;
 	}
 	
 

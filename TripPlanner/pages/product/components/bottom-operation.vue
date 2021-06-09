@@ -18,7 +18,7 @@
 			</view>
 		</view>
 		<view class="btn-group row">
-			<view class="btn center" @click="navTo('/pages/product/evaluate?sightidid=' + sightid)">
+			<view class="btn center" @click="navTo('/pages/product/evaluate?sightid=' + sightid)">
 				<text>写评价</text>
 			</view>
 			<view class="btn center" @click="onOprationClick('buy')">

@@ -47,13 +47,16 @@
 				username:"哈哈",
 				sight_id:1100,
 				sight_name:'八达岭长城',
-				clicked_list: [false, false, false, false, false], //对应星星个数
+				clicked_list: [true, true, true, true, true], //对应星星个数
 				comment:'', 
+				score:5,
+				userlv:999,
 			}
 		},
 		onLoad(options) {
 			this.sight_id = options.sightid;
-			this.loadRating(); //加载评价
+			// this.loadRating(); //加载评价
+			this.getUserInfo();
 		},
 		methods:{
 			navBack(){
@@ -67,28 +70,9 @@
 					this.clicked_list[i] = true;
 				}
 				console.log(num);
+				this.score = num;
 	
 			},
-			// commitComment() {
-			// 	console.log(this.comment);
-			// 	this.CCajax = new XMLHttpRequest()
-			// 	this.CCajax.open('GET', 'http://47.102.212.4:8092/sight/addcomment?sightId=' + this.sight_id + '&text=' + this.comment +'&username=' + this.username, true)
-			// 	this.CCajax.setRequestHeader('Authorization', 'Bearer ')
-			// 	this.CCajax.onreadystatechange = this.CCsuccessfully
-			// 	this.CCajax.send()
-			// },
-			// CCsuccessfully () { // 获取景点信息附属函数
-			//   if (this.CCajax.readyState === 4 && this.CCajax.status === 200) {
-			// 	  console.log(this.CCajax.responseText)
-			// 	  if(this.CCajax.responseText=="评论成功"){
-			// 		  uni.showToast({
-			// 		  	title: '评价成功',
-			// 		  	duration: 2000
-			// 		  });
-					  
-			// 	  }
-			//   }
-			// },
 			commitComment(){
 			   var _self = this;
 			   uni.request({
@@ -97,13 +81,16 @@
 					   sightId: this.sight_id,
 					   text: this.comment,
 					   username: this.username,
+					   score: this.score,
+					   userlevel: this.userlv,
 				   },
 				   method: 'GET',
 				success: (res) => {//请求成功后返回
+						console.log(this.sight_id)
 						console.log(res)
 						console.log(res.data)
-						if (res.statusCode === 200){
-							if(res.data=="评论成功"){
+						if (res.data.code === 20000){
+							if(res.data.data.status=="评论成功"){
 								  uni.showToast({
 									title: '评价成功',
 									duration: 2000
@@ -124,7 +111,27 @@
 				   }
 				});
 			},
-			
+			getUserInfo(){
+				uni.request({
+				   url: "http://47.102.212.4:8090/user/getuserInfo", //请求接口
+				   data:{
+				   },
+				   method: 'GET',
+				success: (res) => {//请求成功后返回
+						console.log(res)
+						console.log(res.data)
+						if (res.data.code === 20000){
+							
+						}else{
+							uni.showToast({
+								title: '获取失败',
+								duration: 2000
+							});		
+						}
+							
+				   }
+				});
+			}
 		}
 	}
 </script>
