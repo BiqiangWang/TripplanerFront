@@ -53,7 +53,7 @@
 			<product-list ref="productList" :list="list" :listType="listType"></product-list>
 		</mescroll-body>
 		
-		<mix-loading v-if="isLoading"></mix-loading>
+		<!-- <mix-loading v-if="isLoading"></mix-loading> -->
 	</view>
 </template>
 
@@ -110,6 +110,7 @@
 			this.sourcePage = options.sourcePage || '';
 			this.keyword = options.keyword || ''; //搜索关键字
 			this.prePage = options.prePage; //来源页 主要用于区分是否来自搜索页面
+			// this.getList();
 			//分类
 			if(options.firstCateId){
 				this.curCateItem = {
@@ -121,10 +122,35 @@
 			//热门推荐
 			this.isHot = options.isHot || 0;
 		},
+		created:function(){
+			this.getList();
+		},
 		onReady() {
 			this.calcCateRect();
 		},
 		methods: {
+			getList(){
+				var _self = this;
+				uni.request({
+					url: "http://47.102.212.4:8080/search/name", //请求接口
+					data: {
+						name: this.keyword,
+					},
+					header:{'content-type':'application/x-www-form-urlencoded'},
+					method: 'POST',
+					success: (res) => { //请求成功后返回
+						console.log(res.data)
+						if (res.statusCode === 200) {
+							this.list = res.data.data;
+							console.log(this.list);
+							// this.hackReset = false;
+							// this.$nextTick(() => {
+							// 	this.hackReset = true;
+							// })
+						}
+					}
+				});
+			},
 			//加载产品列表
 			async loadList(e){
 				this.mescroll.removeEmpty();

@@ -3,22 +3,15 @@
 		<view class="search-wrap center">
 			<view class="input-box row">
 				<text class="mix-icon icon-sousuo"></text>
-				<input 
-					class="input"
-					type="text" 
-					placeholder="请输入搜索关键字" 
-					maxlength="20"
-					v-model="keyword" 
-					@confirm="search"
-					confirm-type="search"
-				/>
+				<input class="input" type="text" placeholder="请输入搜索关键字" maxlength="20" v-model="keyword"
+					@confirm="search" confirm-type="search" />
 				<text v-if="keyword" class="mix-icon icon-guanbi2" @click="clearInput"></text>
 			</view>
 			<view class="search-btn center" @click="search">
 				<text>搜索</text>
 			</view>
 		</view>
-		
+
 		<view class="content">
 			<view v-if="historyList.length > 0" class="s-header row">
 				<text class="tit">历史搜索</text>
@@ -58,7 +51,7 @@
 		},
 		methods: {
 			//加载热搜关键词
-			async loadHotKeywords(){
+			async loadHotKeywords() {
 				const response = await this.$request('search', 'get');
 				this.hotList = response.data;
 			},
@@ -71,45 +64,75 @@
 					}
 				});
 			},
+			getSearchResult(keyword) {
+				console.log(keyword);
+				var _self = this;
+				uni.request({
+					url: "http://47.102.212.4:8080/search/name", //请求接口
+					data: {
+						name: keyword,
+					},
+					header:{'content-type':'application/x-www-form-urlencoded'},
+					method: 'POST',
+					success: (res) => { //请求成功后返回
+						console.log(res.data)
+						if (res.statusCode === 200) {
+							
+							this.hackReset = false;
+							this.$nextTick(() => {
+								this.hackReset = true;
+							})
+						} else {
+							uni.showToast({
+								title: '信息请求错误',
+								duration: 2000
+							});
+						}
+				
+					}
+				});
+			},
 			//执行搜索
 			search(keyword) {
-				if(typeof keyword !== 'string'){
+				if (typeof keyword !== 'string') {
 					keyword = this.keyword;
-				}else{
+				} else {
 					keyword = keyword.trim();
 					this.keyword = keyword;
 				}
-				if(!keyword){
+				if (!keyword) {
 					this.$util.msg('请输入搜索关键字，如 狗粮');
 					return;
 				}
 				this.saveKeyword(); //保存为历史 
 				
-				this.$request('search', 'update', {
-					keyword
-				});
-				
-				if(this.sourcePage === 'productList'){
+				this.getSearchResult(keyword);
+
+				// this.$request('search', 'update', {
+				// 	keyword
+				// });
+
+				if (this.sourcePage === 'productList') {
 					this.$util.prePage().keyword = keyword;
 					this.$util.prePage().refreshList();
 					uni.navigateBack();
-				}else{
+				} else {
 					this.navTo(`/pages/product/list?keyword=${keyword}&sourcePage=search`);
 				}
 			},
 			//保存关键字到历史记录
 			saveKeyword() {
 				let list = uni.getStorageSync('keywordHistoryList');
-				if(!list){
+				if (!list) {
 					list = [];
 				}
-				const index = list.findIndex(item=>item === this.keyword);
-				if(index > -1){
+				const index = list.findIndex(item => item === this.keyword);
+				if (index > -1) {
 					list.splice(index, 1);
 				}
 				list.unshift(this.keyword);
 				//只保存30条记录
-				if(list.length > 30){
+				if (list.length > 30) {
 					list.length = 30;
 				}
 				this.historyList = list;
@@ -126,7 +149,7 @@
 				});
 			},
 			//清空输入框
-			clearInput(){
+			clearInput() {
 				this.keyword = '';
 			}
 		}
@@ -134,31 +157,35 @@
 </script>
 
 <style scoped lang='scss'>
-	.search-wrap{
+	.search-wrap {
 		padding-left: 24rpx;
 		height: 100rpx;
-		
-		.icon-sousuo{
+
+		.icon-sousuo {
 			padding: 0 12rpx 0 20rpx;
 			font-size: 40rpx;
 			color: #999;
 		}
+
 		.input-box {
 			width: 604rpx;
 			height: 80rpx;
 			border-radius: 100rpx;
 			background: #f5f6f7;
 		}
-		.input{
+
+		.input {
 			flex: 1;
 			font-size: 30rpx;
 			color: #333;
 		}
-		.icon-guanbi2{
+
+		.icon-guanbi2 {
 			padding: 10rpx 20rpx;
 			font-size: 32rpx;
 			color: #999;
 		}
+
 		.search-btn {
 			flex-shrink: 0;
 			padding: 0 24rpx 0 20rpx;
@@ -166,34 +193,38 @@
 			color: #007aff;
 		}
 	}
+
 	.content {
 		flex: 1;
 		padding-top: 24rpx;
 		border-radius: 28rpx 28rpx 0 0;
 		background-color: #fff;
 	}
-	.s-header{
+
+	.s-header {
 		height: 80rpx;
 		padding: 0 32rpx 0 40rpx;
-		
-		.tit{
+
+		.tit {
 			flex: 1;
 			font-size: 30rpx;
 			color: #333;
 			font-weight: 700;
 		}
-		.icon-lajitong{
+
+		.icon-lajitong {
 			padding: 10rpx;
 			font-size: 36rpx;
 			color: #333;
 		}
 	}
-	.list{
+
+	.list {
 		display: flex;
 		flex-wrap: wrap;
 		padding: 10rpx 0 0 36rpx;
-		
-		.item{
+
+		.item {
 			min-width: 60rpx;
 			height: 58rpx;
 			padding: 0 24rpx;
