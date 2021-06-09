@@ -64,7 +64,7 @@
 				<text>清空</text>
 			</view>
 			<text class="price fill"></text>
-			<view class="btn center" @click="createOrder">
+			<view class="btn center" @click="navTo('/pages/address/limit')">
 				<text>新路线</text>
 			</view>
 		</view>
