@@ -52,9 +52,38 @@
 			this.receivePush = !!this.userInfo.receive_push;
 		},
 		methods: {
+			postLogout() {
+				uni.request({
+					url: "http://47.102.212.4:8090/user/logout", //请求接口
+					header:{'content-type':'application/x-www-form-urlencoded'},
+					method: 'POST',
+					success: (res) => { //请求成功后返回
+						console.log(res)
+						if (res.statusCode === 200) {
+							if (res.data.success) {
+								uni.showToast({
+									title: '登出成功',
+									duration: 2000,
+								});
+							} else {
+								uni.showToast({
+									title: '登出失败',
+									duration: 2000
+								});
+							}
+						} else {
+							uni.showToast({
+								title: '登出失败',
+								duration: 2000
+							});
+						}
+					}
+				});
+			},
 			async logout(){
 				this.$refs.confirmBtn.loading = true;
-				const res = await this.$request('user', 'logout');
+				this.postLogout();
+				// const res = await this.$request('user', 'logout');
 				this.$refs.confirmBtn.loading = false;
 				this.$util.msg('您已退出登录');
 				this.$store.commit('logout');

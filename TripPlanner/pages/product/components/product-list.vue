@@ -82,16 +82,45 @@
 			}
 		},
 		created: function(){
+			// setTimeout(function(){}, 3000);
+			console.log("111");
+			console.log(this.list);
+			console.log(this.renderList);
 			this.renderList = this.list.map(ele=>{
+				var pic;
+				var name;
+				var id;
+				if (ele.thumb !== undefined) {
+					pic = ele.thumb;
+				}
+				if (ele.picUrl !== undefined) {
+					pic = ele.picUrl;
+				}
+				if (ele.title !== undefined) {
+					name = ele.title;
+				}
+				if (ele.name !== undefined) {
+					name = ele.name;
+				}
+				if (ele.id !== undefined) {
+					id = ele.id;
+				}
+				if (ele.sid !== undefined) {
+					id = ele.sid;
+				}
+				if (ele.price == '' || ele.price == '免费') {
+					ele.price = 0;
+				}
 				return ({
 					loaded: !!this.loaded,
-					thumb: ele.thumb,
-					title: ele.title,
+					thumb: pic,
+					title: name,
 					sales: ele.sales,
 					price: ele.price,
-					_id: ele.id
+					_id: id,
 				})
 			});
+			console.log(this.renderList);
 			this.loaded = true;
 		},
 		watch: {

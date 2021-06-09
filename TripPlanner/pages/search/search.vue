@@ -106,7 +106,7 @@
 				}
 				this.saveKeyword(); //保存为历史 
 				
-				this.getSearchResult(keyword);
+				// this.getSearchResult(keyword);
 
 				// this.$request('search', 'update', {
 				// 	keyword

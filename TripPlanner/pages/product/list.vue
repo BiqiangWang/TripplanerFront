@@ -50,7 +50,7 @@
 			:up="upOption" 
 			@up="loadList" 
 		>
-			<product-list ref="productList" :list="list" :listType="listType"></product-list>
+			<product-list ref="productList" v-if="hackReset" :list="list" :listType="listType"></product-list>
 		</mescroll-body>
 		
 		<!-- <mix-loading v-if="isLoading"></mix-loading> -->
@@ -71,6 +71,7 @@
 		mixins: [MescrollMixin], 
 		data() {
 			return {
+				hackReset:true,
 				sourcePage: '', //来源页 主要用来判断是否来自搜索页
 				listType: 'column', //列表类型 column竖向列表 row 横向列表
 				sortList: [
@@ -143,10 +144,10 @@
 						if (res.statusCode === 200) {
 							this.list = res.data.data;
 							console.log(this.list);
-							// this.hackReset = false;
-							// this.$nextTick(() => {
-							// 	this.hackReset = true;
-							// })
+							this.hackReset = false;
+							this.$nextTick(() => {
+								this.hackReset = true;
+							})
 						}
 					}
 				});
