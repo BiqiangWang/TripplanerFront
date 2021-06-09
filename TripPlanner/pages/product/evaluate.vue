@@ -51,6 +51,10 @@
 				comment:'', 
 			}
 		},
+		onLoad(options) {
+			this.sight_id = options.sightid;
+			this.loadRating(); //加载评价
+		},
 		methods:{
 			navBack(){
 				uni.navigateBack();

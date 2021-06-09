@@ -22,7 +22,7 @@
 			<view class="info_container">
 				<view class="scores">{{ score }}分</view>
 				<view class="visitnum">{{ visitnumber }}条评价</view>
-				<view class="level">{{ sightlevel }}</view>
+				<view class="level" v-if="sightlevel!=''">{{ sightlevel }}</view>
 			</view>
 			<view class="introduction_container">
 				<image class="introduction_logo" src="../../static/tplaner/tishi.png"></image>
@@ -171,7 +171,7 @@
 			};
 		},
 		onLoad(options) {
-			this.id = options.id;
+			this.sightid = options.id;
 			this.loadRating(); //加载评价
 		},
 		onShow() {
@@ -185,15 +185,19 @@
 			return {
 				title: this.data.title,
 				path: '/pages/product/detail?id=' + this.data._id,
-				imageUrl: this.data.thumb
+				imageUrl: this.data.thumb,
 			}
 		},
 		// #endif
 		created:function(){
+			this.init()
 			this.getSightInfo()
 			this.getcomment()
-		},
+		}, 
 		methods: {
+			init(){
+				this.data._id = this.sightid
+			},
 			async loadData() {
 				this.swiperLength = this.carouselList.length;
 				const res = await this.$request('product', 'getDetail', {
@@ -428,7 +432,7 @@
 				   method: 'GET',
 				success: (res) => {//请求成功后返回
 						if (res.statusCode === 200){
-							console.log(res.data)
+							console.log(res.data.data.commentlist)
 						}else{
 							uni.showToast({
 								title: '信息请求错误',

@@ -18,7 +18,7 @@
 			</view>
 		</view>
 		<view class="btn-group row">
-			<view class="btn center" @click="navTo('/pages/product/evaluate')">
+			<view class="btn center" @click="navTo('/pages/product/evaluate?sightidid=' + sightid)">
 				<text>写评价</text>
 			</view>
 			<view class="btn center" @click="onOprationClick('buy')">
@@ -38,7 +38,9 @@
 		name: 'BotoomOperation',
 		data() {
 			return {
-				is_fav: 0
+				is_fav: 0,
+				sightid: 0,
+				sightname: "",
 			};
 		},
 		computed: {
@@ -58,6 +60,10 @@
 			infoData(data){
 				this.is_fav = data.fav; 
 			}
+		},
+		created: function() {
+			this.sightid = this.infoData._id
+			console.log(this.sightid)
 		},
 		methods: {
 			//收藏
