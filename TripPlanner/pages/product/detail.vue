@@ -63,7 +63,6 @@
 				<text>图文详情</text>
 			</view>
 			<jyf-parser ref="article" :html="data.content" lazy-load show-with-animation></jyf-parser>
-			<!-- <rich-text :nodes="data.content"></rich-text> -->
 		</view>
 		<!-- 底部操作菜单 -->
 		<bottom-operation :infoData="data" @onOprationClick="onOprationClick"></bottom-operation>

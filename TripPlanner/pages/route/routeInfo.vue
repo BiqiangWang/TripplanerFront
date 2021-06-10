@@ -8,6 +8,23 @@
 			:up="upOption" 
 			@up="loadList" 
 		> -->
+			<view class="infocontainer">
+				<view class="kongbai"></view>
+				<view class="infocontainer2">
+					<view style="display: flex;">
+						<view class="routename">{{ routename }}</view>
+						<image style="width: 60rpx;height: 60rpx;margin-left: 20rpx;margin-top: 6rpx;" src="../../static/tplaner/editor.png"></image>
+					</view>
+					<view class="routedes">{{ routedes }}</view>
+				</view>
+				<!-- <view class="kongbai"></view> -->
+			</view>
+			<view class="detail-desc">
+				<view class="d-header center">
+					<text>景点列表</text>
+				</view>
+			</view>
+			<view class="kongbai2"></view>
 			<!-- 列表 -->
 			<uni-swipe-action>
 				<uni-swipe-action-item v-for="(item, index) in list" :key="item._id" :options="options" @click="remove($event,index)" >
@@ -18,40 +35,10 @@
 						</view>
 						<view class="right column">
 							<text class="title clamp">{{item.title}}</text>
-							<!-- <text class="sku">{{item.sku.name}}</text> -->
-							<!-- <text class="price">¥{{item.price || ''}}</text> -->
-							<!-- <view class="number-box" @click.stop.prevent="stopPrevent">
-								<mix-number-box :min="1" :max="item.stock" :value="item.number" :isMax="item.number >= item.stock" :isMin="item.number === 1" :index="index" @eventChange="onNumberChange" ></mix-number-box>
-							</view> -->
 						</view>
 					</view>
 				</uni-swipe-action-item>
 			</uni-swipe-action>
-			<!-- 失效商品 -->
-			<!-- <view v-if="invalidList.length > 0" class="invalid">
-				<view class="invalid-header row" style=" height: 72rpx; padding: 0 24rpx 0 22rpx; font-size: 24rpx; color: #333; background-color: #f5f5f5; ">
-					<text class="mix-icon icon-tishi"></text>
-					<text class="fill">商品调整、库存不足等原因会导致商品失效</text>
-					<view class="btn center" @click="clearInvalid">
-						<text class="mix-icon icon-lajitong"></text>
-						<text>清除</text>
-					</view>
-				</view>
-				<view v-for="(item, index) in invalidList" :key="item._id" class="item row">
-					<text class="mix-icon icon-xuanzhong"></text>
-					<view class="image-wrapper lazyload lazypic" :class="{loaded: item.loaded}">
-						<image :src="item.image" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)" ></image>
-					</view>
-					<view class="right column">
-						<text class="title clamp">{{item.title}}</text>
-						<text class="sku">{{item.sku.name}}</text>
-						<view class="row">
-							<text class="price fill">¥{{item.price || ''}}</text>
-							<view class="tag">失效</view>
-						</view>
-					</view>
-				</view>
-			</view> -->
 			<!-- 底部栏 -->
 			<view class="bot-fill-view"></view>
 		<!-- </mescroll-body> -->
@@ -73,7 +60,7 @@
 		<!-- 加载 -->
 		<!-- <mix-loading v-if="isLoading" :type="loaded ? 1 : 2" :mask="true"></mix-loading> -->
 		<!-- 确认对话框 -->
-		<mix-modal ref="mixModal" title="删除提示" text="挑了这么久，真的要狠心清空吗" confirmText="清空" @onConfirm="clear"></mix-modal>
+		<mix-modal ref="mixModal" title="删除提示" text="真的要狠心清空吗" confirmText="清空" @onConfirm="clear"></mix-modal>
 	</view>
 </template>
 
@@ -84,6 +71,8 @@
 		mixins: [tabbarMixin, MescrollMixin], 
 		data() {
 			return {
+				routename:"路线名称",
+				routedes:"路线描述",
 				options: [{
 					text: '删除',
 					style: {
@@ -285,6 +274,62 @@
 			padding: 24rpx 0;
 		}
 	}
+	.infocontainer{
+		width: 100%;
+		background-color: #eaeaea;
+		height: 180rpx;
+	}
+	.infocontainer2{
+		width: 95%;
+		margin-left: 2.5%;
+		background-color: white;
+		border-radius: 15rpx;
+	}
+	.kongbai{
+		height: 10rpx; 
+	}
+	.kongbai2{
+		height: 10rpx; 
+		background-color: #eaeaea;
+		margin-bottom: 20rpx;
+	}
+	.routename{
+		font-size: 44rpx;
+		margin-left: 30rpx;
+		margin-bottom: 20rpx;
+		font-weight: 700px;
+	}
+	.routedes{
+		font-size: 30rpx;
+		margin-left: 40rpx;
+		margin-bottom: 40rpx;
+		color: #8f8f94;
+		height: 80rpx;
+		
+	}
+	/*  详情 */
+	.detail-desc {
+		margin-top: 12rpx;
+		background: #fff;
+	
+		.d-header {
+			height: 80rpx;
+			font-size: 30rpx;
+			color: #333;
+	
+			text {
+				margin: 0 20rpx;
+			}
+	
+			&:before,
+			&:after {
+				content: '';
+				width: 60rpx;
+				border-bottom: 1px solid #ccc;
+			}
+		}
+	}
+	
 	.item{
 		width: 100%;
 		padding-right: 30rpx;

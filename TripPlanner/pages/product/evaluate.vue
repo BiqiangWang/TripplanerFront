@@ -37,10 +37,15 @@
 </template>
 
 <script>
+	import {mapState, mapGetters} from 'vuex'
 	import pageHeader from './components/detail-page-header' //页面头
 	export default {
 		components: {
 			pageHeader,
+		},
+		computed: {
+			...mapState(['userInfo', 'orderCount', 'couponCount']),
+			...mapGetters(['hasLogin']),
 		},
 		data(){
 			return{
@@ -51,13 +56,18 @@
 				comment:'', 
 				score:5,
 				userlv:999,
-				userid:"60c0b46b61c94d389c7bba23",
+				userid:"",
 			}
 		},
 		onLoad(options) {
 			this.sight_id = options.sightid;
-			this.getUserInfo();
 			this.getSightInfo();
+		},
+		onShow() {
+			this.$store.dispatch('getUserInfo');
+			this.userid = this.userInfo.id;
+			console.log(this.userid)
+			this.getUserInfo();
 		},
 		methods:{
 			navBack(){
