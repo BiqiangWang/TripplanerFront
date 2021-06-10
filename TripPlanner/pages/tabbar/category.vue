@@ -60,6 +60,7 @@
 					name: '餐饮'
 				}],
 				current: {},
+				sightList: [],
 				hotList: [{
 							thumb: 'http://img1.qunarzz.com/sight/p0/2005/39/3979f1867defec4ea3.water.jpg_280x200_e1b47993.jpg',
 							title: '八达岭长城',
@@ -93,8 +94,34 @@
 				this.current = res[0];
 				this.list = res;
 			},
+			getTagSight() {
+				uni.request({
+					url: "http://47.102.212.4:8080/search/tag", //请求接口
+					data: {
+						tag: this.item.name,
+					},
+					header:{'content-type':'application/x-www-form-urlencoded'},
+					method: 'POST',
+					success: (res) => { //请求成功后返回
+						console.log(res.data)
+						if (res.statusCode === 200) {
+							
+							this.hackReset = false;
+							this.$nextTick(() => {
+								this.hackReset = true;
+							})
+						} else {
+							uni.showToast({
+								title: '信息请求错误',
+								duration: 2000
+							});
+						}
+					}
+				});
+			},
 			changeCate(item) {
 				this.current = item;
+				
 			},
 			navToList(item) {
 				const arr = [];

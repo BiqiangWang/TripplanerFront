@@ -89,32 +89,48 @@
 					uni.navigateBack();
 				}, 1000)
 			},
-			//手机号登录
-			async login(){
+			postLogon() {
+				var _self = this;
+				uni.request({
+					url: "http://47.102.212.4:8090/user/register", //请求接口
+					data: {
+						name: this.username,
+						password: this.code,
+					},
+					header:{'content-type':'application/x-www-form-urlencoded'},
+					method: 'POST',
+					success: (res) => { //请求成功后返回
+						console.log(res)
+						if (res.statusCode === 200) {
+							if (res.data.success) {
+								uni.showToast({
+									title: '注册成功',
+									duration: 2000,
+								});
+							} else {
+								uni.showToast({
+									title: '注册失败',
+									duration: 2000
+								});
+							}
+						} else {
+							uni.showToast({
+								title: '注册失败',
+								duration: 2000
+							});
+						}
+					}
+				});
+			},
+			async logon(){
 				if(!this.agreement){
 					this.$util.msg('请阅读并同意用户服务及隐私协议');
 					this.$refs.confirmBtn.stop();
 					return;
 				}
 				const {username, code} = this;
-				if(!checkStr(username, 'mobile')){
-					this.$util.msg('请输入正确的手机号码');
-					this.$refs.confirmBtn.stop();
-					return;
-				}
-				if(!checkStr(code, 'mobileCode')){
-					this.$util.msg('密码错误');
-					this.$refs.confirmBtn.stop();
-					return;
-				}
-				const res = await this.$request('user', 'login', {username,code});
-				this.$refs.confirmBtn.stop();
-				
-				if(res.status === 1){
-					this.loginSuccessCallBack(res.data);
-				}else{
-					this.$util.msg(res.msg);
-				}
+				this.postLogon();
+				this.navBack();
 			},
 			navBack(){
 				uni.navigateBack();
