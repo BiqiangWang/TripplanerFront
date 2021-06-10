@@ -409,7 +409,12 @@
 				   method: 'GET',
 				success: (res) => {//请求成功后返回
 						if (res.statusCode === 200){
-							console.log(res.data.data.commentlist)
+							this.ratingData.data.user.lv = res.data.data.commentlist.commentlist[0].Comment.user.lv;
+							this.ratingData.data.user.nickname = res.data.data.commentlist.commentlist[0].Comment.user.nickname;
+							this.ratingData.data.content = res.data.data.commentlist.commentlist[0].Comment.content;
+							this.ratingData.data.date = res.data.data.commentlist.commentlist[0].Comment.date.toString().substr(0,10);
+							this.ratingData.data.rating = res.data.data.commentlist.commentlist[0].Comment.rating;
+							this.ratingData.count = res.data.data.commentlist.commentlist.length;
 						}else{
 							uni.showToast({
 								title: '评论请求错误',

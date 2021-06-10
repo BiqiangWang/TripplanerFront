@@ -14,12 +14,12 @@
 
 
 		<view class="cell row b-b">
-			<text class="tit">联系人</text>
-			<input class="input" type="text" maxlength="10" v-model="data.name" placeholder="请输入联系人姓名" placeholder-class="placeholder" />
+			<text class="tit">路线名称</text>
+			<input class="input" type="text" maxlength="10" v-model="data.name" placeholder="请输入路线名称" placeholder-class="placeholder" />
 		</view>
 		<view class="cell row b-b">
-			<text class="tit">手机号</text>
-			<input class="input" type="number" maxlength="11" v-model="data.mobile" placeholder="请输入联系人手机号码" placeholder-class="placeholder" />
+			<text class="tit">路线描述</text>
+			<input class="input" type="number" maxlength="11" v-model="data.mobile" placeholder="请输入描述(选填)" placeholder-class="placeholder" />
 		</view>
 <!-- 		<view class="cell row b-b">
 			<text class="tit">预算金额</text>
@@ -30,7 +30,7 @@
 			<text class="input clamp" :class="{placeholder: !data.address.address}">
 				{{ data.address.address ? 
 					data.address.address + ' ' + data.address.room :
-					'请在选择出发地点' 
+					'请在地图中选择出发地点' 
 				}}
 			</text>
 			<text class="mix-icon icon-you"></text>
@@ -70,6 +70,8 @@
 			return {
 				num:1,
 				budget:300,
+				sightnum:3,
+				city:'',
 				is_default: true,
 				data: {
 					address: {}
@@ -102,29 +104,30 @@
 			async submit(){
 				const data = this.data;
 				if(!data.name){
-					this.$util.msg('请输入联系人姓名');
+					this.$util.msg('请输入路线名称');
 					this.$refs.confirmBtn.stop();
 					return;
 				}
-				if(!checkStr(data.mobile, 'mobile')){
-					this.$util.msg('请输入正确的手机号码');
-					this.$refs.confirmBtn.stop();
-					return;
-				}
+				// if(!checkStr(data.mobile, 'mobile')){
+				// 	this.$util.msg('请输入路线描述');
+				// 	this.$refs.confirmBtn.stop();
+				// 	return;
+				// }
 				if(!data.address.address){
 					this.$util.msg('请选择出发地点');
 					this.$refs.confirmBtn.stop();
 					return;
 				}
-				const operation = data._id ? 'update' : 'add';
-				const res = await this.$request('address', operation, data);
-				this.$util.msg(res.msg);
-				if(res.status === 1){
-					this.$util.prePage().loadData();
-					setTimeout(()=>{
-						uni.navigateBack();
-					}, 1000)
-				}
+				this.routePlan()
+				// const operation = data._id ? 'update' : 'add';
+				// const res = await this.$request('address', operation, data);
+				// this.$util.msg(res.msg);
+				// if(res.status === 1){
+				// 	this.$util.prePage().loadData();
+				// 	setTimeout(()=>{
+				// 		uni.navigateBack();
+				// 	}, 1000)
+				// }
 			},
 			//选择地址
 			chooseAddress(){
@@ -137,6 +140,8 @@
 			//选择地址回调
 			setAddress(e){
 				console.log(JSON.stringify(e));
+				// console.log(e.ad_info.city.substr(0,2));
+				this.city = e.ad_info.city.substr(0,2);
 				this.data.address = e;
 			},
 			onSwitchChange(e){
@@ -157,6 +162,33 @@
 						changed['checkboxItems[' + i + '].checked'] = false
 					}
 				}
+			},
+			routePlan(){
+				uni.request({
+				   url: "http://47.102.212.4:8080/search/route", //请求接口
+				   data:{
+					   city: this.city,
+					   fund: this.budget,
+					   snum: this.sightnum,
+				   },
+				   method: 'POST',
+				   header:{'content-type':'application/x-www-form-urlencoded'},
+				success: (res) => {//请求成功后返回
+						if (res.statusCode === 200){
+							console.log(res.data.data);
+							uni.showToast({
+								title: '路线规划成功',
+								duration: 2000
+							});		
+						}else{
+							uni.showToast({
+								title: '路线规划请求错误',
+								duration: 2000
+							});		
+						}
+							
+				   }
+				});
 			},
 			
 			// add(id) {		

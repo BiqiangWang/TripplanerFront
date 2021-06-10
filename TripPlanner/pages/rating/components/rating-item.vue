@@ -2,15 +2,15 @@
 	<view class="mix-rating-item b-b">
 		<view class="wrap">
 			<view class="avatar-wrap">
-				<image v-if="!item.user.anonymous && item.user.lv > 0" class="crown" src="/static/icon/crown.png"></image>
-				<image class="avatar" :src="item.user.anonymous ? '/static/icon/default-avatar.png' : item.user.avatar || '/static/icon/default-avatar.png'" mode="aspectFill"></image>
-				<text v-if="!item.user.anonymous" class="mix-icon" :class="item.user.gender===2?'icon-xingbie-nv':'icon-xingbie'"></text>
+				<image v-if="item.user.anonymous != true && item.user.lv > 0" class="crown" src="/static/icon/crown.png"></image>
+				<image class="avatar" :src="item.user.anonymous == true ? '/static/icon/default-avatar.png' : item.user.avatar || '/static/icon/default-avatar.png'" mode="aspectFill"></image>
+				<text v-if="item.user.anonymous != true" class="mix-icon" :class="item.user.gender===2?'icon-xingbie-nv':'icon-xingbie'"></text>
 			</view>
 			<view class="right fill column">
 				<view class="row">
 					<text class="name"> {{ 
 						(
-							item.user.anonymous ? '匿名' : 
+							item.user.anonymous == true ? '匿名' : 
 							(item.user.nickname || item.user.username)
 						) 
 					}} </text>
@@ -76,17 +76,20 @@
 		// 	}
 		// },
 		created: function() {
-			console.log('create!!!');
+			console.log('评分列表');
 			this.item = this.items;
-			this.item.anonymous = this.items.anonymous;
-			this.item.nickname = this.items.nickname;
-			this.item.avatar = this.items.avatar;
-			this.item.rating = this.items.rating;
-			this.item.content = this.items.content;
-			this.item.username = this.items.username;
-			console.log(items);
-			console.log(item);
-			console.log(item.content);
+			// console.log(items);
+			// console.log(item);
+			// console.log(item.content);
+			// this.item.anonymous = this.items.user.anonymous;
+			// this.item.nickname = this.items.user.nickname;
+			// this.item.avatar = this.items.user.avatar;
+			// this.item.rating = this.items.rating;
+			// this.item.content = this.items.content;
+			// this.item.username = this.items.user.username;
+			// this.item.date = this.items.date.toString().substr(0,10);
+			this.item.date = this.item.date.toString().substr(0,10);
+			console.log(this.items.date);
 		},
 		methods: {
 			previewImage(current, urls){

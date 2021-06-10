@@ -21,9 +21,10 @@
 		</mescroll-body> -->
 		<view class="allcomment">
 			<rating-item
+				v-if="navReset"
 				v-for = "(item, index) in list" 
 				:key = "index"
-				:items = "item"
+				:items = "item.Comment"
 			></rating-item>
 		</view>
 		
@@ -41,6 +42,7 @@
 		mixins: [MescrollMixin], 
 		data() {
 			return {
+				navReset:true,
 				navs: [{name: '最新'}, {name: '好评'}, {name: '中评'}, {name: '差评'}],
 				navCurrent: 0, //当前tab
 				upOption:{
@@ -53,51 +55,52 @@
 				},
 				navCounts: [], //数量
 				list: [
-					{
-						user: {
-							anonymous: false,
-							lv: 300,
-							avatar: '/static/icon/default-avatar.png',
-							gender: 1,
-							nickname: '飞飞',
-							username: '飞飞',
-						},
-						rating: 5,
-						content: 'good',
-						date: "2021-5-1",
-					},
-					{
-						user: {
-							anonymous: true,
-							lv: 0,
-							avatar: '/static/icon/default-avatar.png',
-							gender: 2,
-							nickname: '冲冲',
-							username: '冲冲',
-						},
-						rating: 5,
-						content: '这也太好玩了吧',
-						date: "2021-5-1",
-					},
-					{
-						user: {
-							anonymous: false,
-							lv: 3,
-							avatar: '/static/icon/default-avatar.png',
-							gender: 2,
-							nickname: '瑶瑶公主',
-							username: '瑶瑶公主',
-						},
-						rating: 2,
-						content: '就那样吧',
-						date: "2021-5-1",
-					},
+					// {
+					// 	user: {
+					// 		anonymous: false,
+					// 		lv: 300,
+					// 		avatar: '/static/icon/default-avatar.png',
+					// 		gender: 1,
+					// 		nickname: '飞飞',
+					// 		username: '飞飞',
+					// 	},
+					// 	rating: 5,
+					// 	content: 'good',
+					// 	date: "2021-5-1",
+					// },
+					// {
+					// 	user: {
+					// 		anonymous: true,
+					// 		lv: 0,
+					// 		avatar: '/static/icon/default-avatar.png',
+					// 		gender: 2,
+					// 		nickname: '冲冲',
+					// 		username: '冲冲',
+					// 	},
+					// 	rating: 5,
+					// 	content: '这也太好玩了吧',
+					// 	date: "2021-5-1",
+					// },
+					// {
+					// 	user: {
+					// 		anonymous: false,
+					// 		lv: 3,
+					// 		avatar: '/static/icon/default-avatar.png',
+					// 		gender: 2,
+					// 		nickname: '瑶瑶公主',
+					// 		username: '瑶瑶公主',
+					// 	},
+					// 	rating: 2,
+					// 	content: '就那样吧',
+					// 	date: "2021-5-1",
+					// },
 				],
 			}
 		},
 		onLoad(options) {
 			this.id = options.id;
 			this.loadCount();
+			this.getallcomment();
 		},
 		methods: {
 			async loadList(e){
@@ -136,8 +139,122 @@
 					return;
 				}
 				this.navCurrent = current;
-				this.isLoading = true;
-				this.mescroll && this.mescroll.resetUpScroll(false)
+				// this.isLoading = true;
+				// this.mescroll && this.mescroll.resetUpScroll(false)
+				console.log(this.navCurrent)
+				if(this.navCurrent==1){
+					this.getgoodcomment()
+				}else if(this.navCurrent==2){
+					this.getmidcomment()
+				}else if(this.navCurrent==3){
+					this.getbadcomment()
+				}else{
+					this.getallcomment()
+				}
+			},
+			getallcomment(){
+				uni.request({
+				   url: "http://47.102.212.4:8092/sight/getComment", //请求接口
+				   data:{
+					   sightId: this.id,
+				   },
+				   method: 'GET',
+				success: (res) => {//请求成功后返回
+						if (res.statusCode === 200){
+							console.log(res.data.data.commentlist.commentlist)
+							this.list.length=0;
+							this.list = res.data.data.commentlist.commentlist;
+							this.navReset = false;
+							  this.$nextTick(() => {
+							       this.navReset = true;
+							  })
+						}else{
+							uni.showToast({
+								title: '评论请求错误',
+								duration: 2000
+							});		
+						}
+							
+				   }
+				});
+			},
+			getgoodcomment(){
+				uni.request({
+				   url: "http://47.102.212.4:8092/sight/getgoodcomment?", //请求接口
+				   data:{
+					   sightId: this.id,
+				   },
+				   method: 'GET',
+				success: (res) => {//请求成功后返回
+						if (res.statusCode === 200){
+							console.log(res.data.data.commentlist.goodcommentlist);
+							this.list.length=0;
+							this.list = res.data.data.commentlist.goodcommentlist;
+							this.navReset = false;
+							  this.$nextTick(() => {
+							       this.navReset = true;
+							  })
+						}else{
+							uni.showToast({
+								title: '评论请求错误',
+								duration: 2000
+							});		
+						}
+							
+				   }
+				});
+			},
+			getmidcomment(){
+				uni.request({
+				   url: "http://47.102.212.4:8092/sight/getmidcomment?", //请求接口
+				   data:{
+					   sightId: this.id,
+				   },
+				   method: 'GET',
+				success: (res) => {//请求成功后返回
+						if (res.statusCode === 200){
+							console.log(res.data.data.commentlist.midcommentlist) 
+							this.list.length=0;
+							this.list = res.data.data.commentlist.midcommentlist;
+							this.navReset = false;
+							  this.$nextTick(() => {
+							       this.navReset = true;
+							  })
+						}else{
+							uni.showToast({
+								title: '评论请求错误',
+								duration: 2000
+							});		
+						}
+							
+				   }
+				});
+			},
+			getbadcomment(){
+				uni.request({
+				   url: "http://47.102.212.4:8092/sight/getbadcomment?", //请求接口
+				   data:{
+					   sightId: this.id,
+				   },
+				   method: 'GET',
+				success: (res) => {//请求成功后返回
+						if (res.statusCode === 200){
+							console.log(res.data.data.commentlist.badcommentlist) 
+							this.list.length=0;
+							this.list = res.data.data.commentlist.badcommentlist;
+							this.navReset = false;
+							  this.$nextTick(() => {
+							       this.navReset = true;
+							  })
+						}else{
+							uni.showToast({
+								title: '评论请求错误',
+								duration: 2000
+							});		
+						}
+							
+				   }
+				});
 			}
 		}
 	}
