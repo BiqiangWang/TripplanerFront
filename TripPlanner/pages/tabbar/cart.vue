@@ -14,7 +14,7 @@
 					<view class="item row">
 						<text class="mix-icon icon-xuanzhong" :class="{active: item.checked}" @click.stop.prevent="checkRow(item)"></text>
 						<view class="image-wrapper lazyload lazypic" :class="{loaded: item.loaded}" @click="navTo('/pages/route/routeInfo?id='+item.product_id)">
-							<image :src="item.image" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)" ></image>
+							<image :src="item.sight[0].picUrl" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)" ></image>
 						</view>
 						<view class="right column">
 							<text class="title clamp">{{item.name}}</text>

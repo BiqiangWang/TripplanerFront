@@ -25,7 +25,7 @@
 					},
 					{
 						image: '../../static/tplaner/ad2.png',
-						link: '/pages/product/detail?id=413'
+						link: '/pages/product/detail?id=363'
 					},
 					{
 						image: '../../static/tplaner/ad3.png',
