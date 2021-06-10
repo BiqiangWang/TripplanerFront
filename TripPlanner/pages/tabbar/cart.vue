@@ -13,8 +13,8 @@
 				<uni-swipe-action-item v-if="hackReset" v-for="(item, index) in list" :key="item._id" :options="options" @click="remove($event,index)" >
 					<view class="item row">
 						<text class="mix-icon icon-xuanzhong" :class="{active: item.checked}" @click.stop.prevent="checkRow(item)"></text>
-						<view class="image-wrapper lazyload lazypic" :class="{loaded: item.loaded}" @click="navTo('/pages/route/routeInfo?id='+item.product_id)">
-							<image :src="item.sight[0].picUrl" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)" ></image>
+						<view class="image-wrapper lazyload lazypic" :class="{loaded: item.loaded}" @click="navTo('/pages/route/routeInfo?id='+item.id)">
+							<image :src="item.sights[0].picUrl" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)" ></image>
 						</view>
 						<view class="right column">
 							<text class="title clamp">{{item.name}}</text>
@@ -103,24 +103,7 @@
 					},
 					noMoreSize: 50,
 				},
-				list: [{
-							image: 'http://img1.qunarzz.com/sight/p0/2005/39/3979f1867defec4ea3.water.jpg_280x200_e1b47993.jpg',
-							title: '路线1',
-							sales: '2307',
-							price: '40'
-						},
-						{
-							image: 'http://img1.qunarzz.com/tuan/team2/1507/2c/83e0e0e7ae082a.jpg_280x200_8c8e548a.jpg',
-							title: '路线2',
-							sales: '2307',
-							price: '69.9'
-						},
-						{
-							image: 'http://img1.qunarzz.com/sight/p64/201211/04/9173ff9f33e97f3193835fbb.jpg_280x200_9537b05a.jpg',
-							title: '路线3',
-							sales: '2307',
-							price: '47'
-						}],
+				list: [],
 				invalidList: [],
 				totalPrice: 0,
 				userid:"",
@@ -295,7 +278,8 @@
 					header:{'content-type':'application/x-www-form-urlencoded'},
 					method: 'GET',
 					success: (res) => { //请求成功后返回
-						console.log(res.data.data)
+						console.log(res.data.data);
+						console.log(res.data.data[0].sights[0].picUrl);
 						if (res.statusCode === 200) {
 							this.list = res.data.data;
 							this.hackReset = false;

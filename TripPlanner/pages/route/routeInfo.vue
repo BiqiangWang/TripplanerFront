@@ -43,7 +43,7 @@
 		<!-- </mescroll-body> -->
 		
 		<!-- <view v-if="loaded && (list.length > 0 || invalidList.length > 0)" class="bottom row"> -->
-		<view class="bottom row">
+		<!-- <view class="bottom row">
 			<text class="mix-icon icon-xuanzhong" :class="{active: allChecked}" @click="checkAll"></text>
 			<text v-if="!allChecked" class="check-tip">全选</text>
 			<view class="del-btn center" :class="{active: allChecked}" @click="showPopup('mixModal')">
@@ -53,13 +53,13 @@
 			<view class="btn center" @click="createOrder">
 				<text>新路线</text>
 			</view>
-		</view>
+		</view> -->
 		<!-- 缺省 -->
 		<!-- <mix-empty v-else-if="loaded" type="cart"></mix-empty> -->
 		<!-- 加载 -->
 		<!-- <mix-loading v-if="isLoading" :type="loaded ? 1 : 2" :mask="true"></mix-loading> -->
 		<!-- 确认对话框 -->
-		<mix-modal ref="mixModal" title="删除提示" text="真的要狠心清空吗" confirmText="清空" @onConfirm="clear"></mix-modal>
+		<!-- <mix-modal ref="mixModal" title="删除提示" text="真的要狠心清空吗" confirmText="清空" @onConfirm="clear"></mix-modal> -->
 	</view>
 </template>
 
@@ -128,6 +128,7 @@
 			}
 		},
 		onLoad() {
+			this.routeid = this.$route.query.id;
 			this.getRouteInfo()
 			uni.$on('refreshCart', ()=>{
 				this.list = [];
