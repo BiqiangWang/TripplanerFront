@@ -66,7 +66,6 @@
 		onShow() {
 			this.$store.dispatch('getUserInfo');
 			this.userid = this.userInfo.id;
-			console.log(this.userid)
 			this.getUserInfo();
 		},
 		methods:{
@@ -105,7 +104,9 @@
 								  uni.showToast({
 									title: '评价成功',
 									duration: 2000
-								  });					  
+								  });
+								  this.navTo('/pages/product/detail?id=' + this.sight_id)
+								
 							}else{
 								uni.showToast({
 									title: '评价失败',

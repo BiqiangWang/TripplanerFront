@@ -6,7 +6,7 @@
 		</view>
 		<view class="cell row b-b">
 			<text class="tit">路线描述</text>
-			<input class="input" type="number" maxlength="11" v-model="data.mobile" placeholder="请输入描述(选填)" placeholder-class="placeholder" />
+			<input class="input" type="text" maxlength="11" v-model="data.mobile" placeholder="请输入描述(选填)" placeholder-class="placeholder" />
 		</view>
 		<view class="cell row b-b">
 			<text class="tit">景点数量</text>
@@ -56,11 +56,23 @@
 </template>
 
 <script>
+	import {mapState, mapGetters} from 'vuex'
 	import {checkStr} from '@/common/js/util'
 	export default {
+		computed: {
+			...mapState(['userInfo', 'orderCount', 'couponCount']),
+			...mapGetters(['hasLogin']),
+		},
+		onShow() {
+			this.$store.dispatch('getUserInfo');
+			this.userid = this.userInfo.id;
+			console.log(this.userid)
+			this.getUserInfo();
+		},
 		data() {
 			return {
 				// num:1,
+				userid:"",
 				budget:300,
 				sightnum:3,
 				city:'',
@@ -111,15 +123,6 @@
 					return;
 				}
 				this.routePlan()
-				// const operation = data._id ? 'update' : 'add';
-				// const res = await this.$request('address', operation, data);
-				// this.$util.msg(res.msg);
-				// if(res.status === 1){
-				// 	this.$util.prePage().loadData();
-				// 	setTimeout(()=>{
-				// 		uni.navigateBack();
-				// 	}, 1000)
-				// }
 			},
 			//选择地址
 			chooseAddress(){
@@ -156,28 +159,33 @@
 			},
 			routePlan(){
 				uni.request({
-				   url: "http://47.102.212.4:8080/search/route", //请求接口
+				   url: "http://47.102.212.4:8082/search/route", //请求接口
 				   data:{
+					   name: this.data.name,
+					   desc: this.mobile,
 					   city: this.city,
-					   fund: this.budget,
+					   cost: this.budget,
 					   snum: this.sightnum,
+					   trans: 1,
+					   user: this.userid,
+					
 				   },
 				   method: 'POST',
 				   header:{'content-type':'application/x-www-form-urlencoded'},
 				success: (res) => {//请求成功后返回
-						if (res.statusCode === 200){
+						if (res.data.code === 20000){
 							console.log(res.data.data);
 							uni.showToast({
 								title: '路线规划成功',
 								duration: 2000
-							});		
+							});
+							this.navTo('/pages/route/routeInfo?')
 						}else{
 							uni.showToast({
 								title: '路线规划请求错误',
 								duration: 2000
 							});		
 						}
-							
 				   }
 				});
 			},
@@ -185,7 +193,6 @@
 				if(this.sightnum>0){
 					this.sightnum--;
 				}
-				
 			},
 			add(){
 				if(this.sightnum<6)

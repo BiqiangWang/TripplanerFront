@@ -35,7 +35,7 @@
 				headerOpacity: 0,
 				currentAnchor: 0,
 				anchorList: [
-					{id: 1, name: '商品', top: 0},
+					{id: 1, name: '景点', top: 0},
 					{id: 2, name: '评价', top: 0},
 					{id: 3, name: '详情', top: 0},
 				]
