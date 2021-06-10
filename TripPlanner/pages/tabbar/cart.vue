@@ -11,7 +11,7 @@
 			<!-- 列表 -->
 			<uni-swipe-action>
 				<uni-swipe-action-item v-if="hackReset" v-for="(item, index) in list" :key="item._id" :options="options" @click="remove($event,index)" >
-					<view class="item row">
+					<view class="item row" style="margin-top: 10px;">
 						<text class="mix-icon icon-xuanzhong" :class="{active: item.checked}" @click.stop.prevent="checkRow(item)"></text>
 						<view class="image-wrapper lazyload lazypic" :class="{loaded: item.loaded}" @click="navTo('/pages/route/routeInfo?id='+item.id)">
 							<image :src="item.sights[0].picUrl" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)" ></image>

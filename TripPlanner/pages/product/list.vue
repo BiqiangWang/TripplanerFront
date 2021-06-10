@@ -124,12 +124,34 @@
 			this.isHot = options.isHot || 0;
 		},
 		created:function(){
-			this.getList();
+			if (this.isHot == true) {
+				this.getHotList();
+			} else {
+				this.getList();
+			}
 		},
 		onReady() {
 			this.calcCateRect();
 		},
 		methods: {
+			getHotList() {
+				var _self = this;
+				uni.request({
+					url: "http://47.102.212.4:8092/sight/recommend",
+					method: 'GET',
+					success: (res) => { //请求成功后返回
+						console.log(res.data)
+						if (res.statusCode === 200) {
+							this.list = res.data.data.sights.sightlist;
+							console.log(this.list);
+							this.hackReset = false;
+							this.$nextTick(() => {
+								this.hackReset = true;
+							})
+						}
+					}
+				});
+			},
 			getList(){
 				var _self = this;
 				uni.request({

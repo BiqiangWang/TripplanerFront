@@ -85,7 +85,6 @@
 			// setTimeout(function(){}, 3000);
 			console.log("111");
 			console.log(this.list);
-			console.log(this.renderList);
 			this.renderList = this.list.map(ele=>{
 				var pic;
 				var name;
