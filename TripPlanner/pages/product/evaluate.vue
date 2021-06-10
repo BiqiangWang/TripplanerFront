@@ -51,12 +51,13 @@
 				comment:'', 
 				score:5,
 				userlv:999,
+				userid:"60c0b46b61c94d389c7bba23",
 			}
 		},
 		onLoad(options) {
 			this.sight_id = options.sightid;
-			// this.loadRating(); //加载评价
 			this.getUserInfo();
+			this.getSightInfo();
 		},
 		methods:{
 			navBack(){
@@ -115,13 +116,34 @@
 				uni.request({
 				   url: "http://47.102.212.4:8090/user/getuserInfo", //请求接口
 				   data:{
+					   userId: this.userid
 				   },
 				   method: 'GET',
 				success: (res) => {//请求成功后返回
-						console.log(res)
-						console.log(res.data)
 						if (res.data.code === 20000){
+							this.userlv = res.data.data.userInfo.User.level;
+							this.username = res.data.data.userInfo.User.name;
+						}else{
+							uni.showToast({
+								title: '获取失败',
+								duration: 2000
+							});		
+						}
 							
+				   }
+				});
+			},
+			getSightInfo(){
+				uni.request({
+				   url: "http://47.102.212.4:8092/sight/getInfo", //请求接口
+				   data:{
+					   sightId: this.sight_id
+				   },
+				   method: 'GET',
+				success: (res) => {//请求成功后返回
+						if (res.data.code === 20000){
+							console.log(res.data.data.sightInfo.Sight.stname)
+							this.sight_name = res.data.data.sightInfo.Sight.stname;
 						}else{
 							uni.showToast({
 								title: '获取失败',

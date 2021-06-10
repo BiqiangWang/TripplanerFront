@@ -1,18 +1,5 @@
 <template>
 	<view class="app">
-<!-- 		<view class="update-count">
-			<view class="reduce" @tap="reduce(num)">
-			   <text class="add-reduce">-</text>
-			</view>
-			<view class="cart-count">
-				{{num}}
-			</view>
-			<view class="add" @tap="add(num)">
-				<text class="add-reduce">+</text>
-			</view>
-		</view> -->
-
-
 		<view class="cell row b-b">
 			<text class="tit">路线名称</text>
 			<input class="input" type="text" maxlength="10" v-model="data.name" placeholder="请输入路线名称" placeholder-class="placeholder" />
@@ -21,10 +8,15 @@
 			<text class="tit">路线描述</text>
 			<input class="input" type="number" maxlength="11" v-model="data.mobile" placeholder="请输入描述(选填)" placeholder-class="placeholder" />
 		</view>
-<!-- 		<view class="cell row b-b">
-			<text class="tit">预算金额</text>
-			<input class="input" type="number" maxlength="11" v-model="data.mobile" placeholder="请输入旅行预算金额" placeholder-class="placeholder" />
-		</view> -->
+		<view class="cell row b-b">
+			<text class="tit">景点数量</text>
+			<!-- <input class="input" type="number" maxlength="11" v-model="data.mobile" placeholder="请输入描述(选填)" placeholder-class="placeholder" /> -->
+			<view class="numchoose">
+				<image class="subtract" src="../../static/tplaner/minus.png" @click="sub"></image>
+				<view class="sightnum"> {{ sightnum }} </view>
+				<image class="add" src="../../static/tplaner/add.png" @click="add"></image>
+			</view>
+		</view>
 		<view class="cell row b-b" @click="chooseAddress">
 			<text class="tit">地址</text>
 			<text class="input clamp" :class="{placeholder: !data.address.address}">
@@ -68,7 +60,7 @@
 	export default {
 		data() {
 			return {
-				num:1,
+				// num:1,
 				budget:300,
 				sightnum:3,
 				city:'',
@@ -140,7 +132,6 @@
 			//选择地址回调
 			setAddress(e){
 				console.log(JSON.stringify(e));
-				// console.log(e.ad_info.city.substr(0,2));
 				this.city = e.ad_info.city.substr(0,2);
 				this.data.address = e;
 			},
@@ -190,27 +181,16 @@
 				   }
 				});
 			},
-			
-			// add(id) {		
-			// 	id++;
-			// 	this.num=id;
-			// },
-			// // 减少商品数量
-			// reduce(id) {
-			// 	if(id>1){
-			// 		if(this.num==id){
-			// 			this.num--
-			// 		}
-			// 	}
-			// 	else{
-			// 		uni.showToast({
-			// 			title:'至少购买一件商品',
-			// 			icon:'none'
-			// 		})
-			// 	}
-			// },
-			
-			
+			sub(){
+				if(this.sightnum>0){
+					this.sightnum--;
+				}
+				
+			},
+			add(){
+				if(this.sightnum<6)
+					this.sightnum++;
+			},
 		}
 	}
 </script>
@@ -259,43 +239,24 @@
 
 	}
 	
-	// .update-count{
-	// 	margin-top: 40rpx;
-	// 	display: flex;
-	// 	.reduce{
-	// 		width: 40rpx;
-	// 		height: 40rpx;
-	// 		background: #F1ECE7;
-	// 		border-radius: 21.6rpx;
-	// 		border-radius: 21.6rpx;
-	// 		color: #979797;
-	// 		font-size: 50rpx;
-	// 		text-align: center;
-	// 	}
-	// 	.add{
-	// 		width: 40rpx;
-	// 		height: 40rpx;
-	// 		background: #F1ECE7;
-	// 		border-radius: 21.6rpx;
-	// 		border-radius: 21.6rpx;
-	// 		color: #979797;
-	// 		font-size: 40rpx;
-	// 		text-align: center;
-	// 	}
-	// 	.cart-count{
-	// 		width: 72rpx;
-	// 		height: 40rpx;
-	// 		background: #F1ECE7;
-	// 		border-radius: 21.6rpx;
-	// 		border-radius: 21.6rpx;
-	// 		margin-left: 18rpx;
-	// 		margin-right: 18rpx;
-	// 		text-align: center;
-	// 		line-height: 40rpx;
-	// 	}
-	// }
-	// .add-reduce{
-	// 	margin-top: 30rpx;
-	// }
-	
+	.numchoose{
+		display: flex;
+	}
+	.subtract{
+		width: 40rpx;
+		height: 40rpx;
+		margin-left: 20rpx;
+		top: 10rpx;
+	}
+	.sightnum{
+		margin-left: 20rpx;
+		width: 30rpx;
+		font-size: 40rpx;
+	}
+	.add{
+		width: 40rpx;
+		height: 40rpx;
+		margin-left: 20rpx;
+		top: 10rpx;
+	}
 </style>

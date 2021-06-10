@@ -76,7 +76,6 @@
 		// 	}
 		// },
 		created: function() {
-			console.log('评分列表');
 			this.item = this.items;
 			// console.log(items);
 			// console.log(item);
@@ -89,7 +88,6 @@
 			// this.item.username = this.items.user.username;
 			// this.item.date = this.items.date.toString().substr(0,10);
 			this.item.date = this.item.date.toString().substr(0,10);
-			console.log(this.items.date);
 		},
 		methods: {
 			previewImage(current, urls){
