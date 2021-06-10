@@ -10,14 +10,14 @@
 		> -->
 			<!-- 列表 -->
 			<uni-swipe-action>
-				<uni-swipe-action-item v-for="(item, index) in list" :key="item._id" :options="options" @click="remove($event,index)" >
+				<uni-swipe-action-item v-if="hackReset" v-for="(item, index) in list" :key="item._id" :options="options" @click="remove($event,index)" >
 					<view class="item row">
 						<text class="mix-icon icon-xuanzhong" :class="{active: item.checked}" @click.stop.prevent="checkRow(item)"></text>
 						<view class="image-wrapper lazyload lazypic" :class="{loaded: item.loaded}" @click="navTo('/pages/route/routeInfo?id='+item.product_id)">
 							<image :src="item.image" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)" ></image>
 						</view>
 						<view class="right column">
-							<text class="title clamp">{{item.title}}</text>
+							<text class="title clamp">{{item.name}}</text>
 							<!-- <text class="sku">{{item.sku.name}}</text> -->
 							<!-- <text class="price">¥{{item.price || ''}}</text> -->
 							<!-- <view class="number-box" @click.stop.prevent="stopPrevent">
@@ -58,11 +58,11 @@
 		
 		<!-- <view v-if="loaded && (list.length > 0 || invalidList.length > 0)" class="bottom row"> -->
 		<view class="bottom row">
-			<text class="mix-icon icon-xuanzhong" :class="{active: allChecked}" @click="checkAll"></text>
+			<!-- <text class="mix-icon icon-xuanzhong" :class="{active: allChecked}" @click="checkAll"></text>
 			<text v-if="!allChecked" class="check-tip">全选</text>
 			<view class="del-btn center" :class="{active: allChecked}" @click="showPopup('mixModal')">
 				<text>清空</text>
-			</view>
+			</view> -->
 			<text class="price fill"></text>
 			<view class="btn center" @click="navTo('/pages/address/limit')">
 				<text>新路线</text>
@@ -77,13 +77,15 @@
 	</view>
 </template>
 
-<script>
+<script>	
+	import {mapState, mapGetters} from 'vuex'
 	import tabbarMixin from './mixin/tabbar' 
 	import MescrollMixin from "@/components/mescroll-uni/mescroll-mixins.js";
 	export default {
 		mixins: [tabbarMixin, MescrollMixin], 
 		data() {
 			return {
+				hackReset:true,
 				options: [{
 					text: '删除',
 					style: {
@@ -97,7 +99,7 @@
 					 	size: 15 // 每页数据的数量
 					},
 					empty: {
-						onShow: false,
+						onShow: true,
 					},
 					noMoreSize: 50,
 				},
@@ -121,9 +123,11 @@
 						}],
 				invalidList: [],
 				totalPrice: 0,
+				userid:"",
 			}
 		},
 		computed: {
+			...mapState(['userInfo', 'orderCount', 'couponCount']),
 			allChecked(){
 				return this.list.length > 0 && this.list.every(item=> item.checked);
 			},
@@ -144,8 +148,14 @@
 			})
 		},
 		onShow() {
-			this.mescroll && this.mescroll.resetUpScroll(false)
+			this.$store.dispatch('getUserInfo');
+			this.userid = this.userInfo.id;
+			console.log(this.userid)
+			this.getRouteList();
 		},
+		// onShow() {
+		// 	this.mescroll && this.mescroll.resetUpScroll(false)
+		// },
 		methods: {
 			async loadList(type){
 				const res = await this.$request('cart', 'get');
@@ -273,6 +283,33 @@
 					total += item.price * item.number
 				})
 				this.totalPrice = total;
+			},
+			getRouteList() {
+				console.log("333");
+				console.log(this.userid);
+				uni.request({
+					url: "http://47.102.212.4:8082/search/getroute", //请求接口
+					data: {
+						userId: this.userid,
+					},
+					header:{'content-type':'application/x-www-form-urlencoded'},
+					method: 'GET',
+					success: (res) => { //请求成功后返回
+						console.log(res.data.data)
+						if (res.statusCode === 200) {
+							this.list = res.data.data;
+							this.hackReset = false;
+							this.$nextTick(() => {
+								this.hackReset = true;
+							})
+						} else {
+							uni.showToast({
+								title: '信息请求错误',
+								duration: 2000
+							});
+						}
+					}
+				});
 			}
 		}
 	}

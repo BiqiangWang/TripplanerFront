@@ -82,7 +82,7 @@
 			},
 			async logout(){
 				this.$refs.confirmBtn.loading = true;
-				this.postLogout();
+				// this.postLogout();
 				// const res = await this.$request('user', 'logout');
 				this.$refs.confirmBtn.loading = false;
 				this.$util.msg('您已退出登录');
