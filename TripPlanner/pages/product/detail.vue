@@ -56,7 +56,9 @@
 				<text class="tip">好评率 {{ data.rating_ratio || 100 }}%</text>
 				<text class="mix-icon icon-you"></text>
 			</view>
-			<rating-item v-if="ratingData.data" :items="ratingData.data"></rating-item>
+			<rating-item v-if="commentshow" :items="ratingData.data"></rating-item>
+			<view v-if="!commentshow" class="sight_address" > 这里还没有评论哦 </view>
+			<!-- <rating-item v-if="ratingData.data" :items="ratingData.data"></rating-item> -->
 		</view>
 		<view class="detail-desc">
 			<view class="d-header center">
@@ -90,6 +92,7 @@
 		},
 		data() {
 			return {
+				commentshow:false,
 				hackReset:true,
 				titleNViewBackground: '',
 				swiperCurrent: 0,
@@ -140,7 +143,7 @@
 						content: 'good',
 						date: "2021-5-1",
 					},
-					count: 3,
+					count: 0,
 					rating_ratio: 66,
 					Sight:{}
 				}, //评价
@@ -415,6 +418,9 @@
 							this.ratingData.data.date = res.data.data.commentlist.commentlist[0].Comment.date.toString().substr(0,10);
 							this.ratingData.data.rating = res.data.data.commentlist.commentlist[0].Comment.rating;
 							this.ratingData.count = res.data.data.commentlist.commentlist.length;
+							if(this.ratingData.count!=0){
+								this.commentshow=true
+							}
 						}else{
 							uni.showToast({
 								title: '评论请求错误',
