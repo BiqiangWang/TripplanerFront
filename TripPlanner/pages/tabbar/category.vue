@@ -18,7 +18,7 @@
 						<text class="tit">{{ item.name }}</text>
 					</view>
 				</view> -->
-				<product-list ref="productList" :list="hotList" listType='row'></product-list>
+				<product-list ref="productList" v-if="hackReset" :list="sightList" listType='row'></product-list>
 			</scroll-view>
 			
 		</view>
@@ -37,9 +37,10 @@
 		mixins: [tabbarMixin],
 		data() {
 			return {
+				hackReset:true,
 				list: [{
 					_id: 1,
-					name: '文化古迹'
+					name: '自然风光'
 				}, {
 					_id: 2,
 					name: '城市观光'
@@ -54,12 +55,39 @@
 					name: '游乐场'
 				}, {
 					_id: 6,
-					name: '自然风光'
+					name: '文化古迹'
 				}, {
 					_id: 7,
 					name: '餐饮'
+				}, {
+					_id: 8,
+					name: '公园'
+				}, {
+					_id: 9,
+					name: '古建筑'
+				}, {
+					_id: 10,
+					name: '运动健身'
+				}, {
+					_id: 11,
+					name: '户外拓展'
+				}, {
+					_id: 12,
+					name: '展馆'
+				}, {
+					_id: 13,
+					name: '游船'
+				}, {
+					_id: 14,
+					name: '玩乐'
+				}, {
+					_id: 15,
+					name: '温泉'
 				}],
-				current: {},
+				current: {
+					_id: 1,
+					name: '自然风光',
+				},
 				sightList: [],
 				hotList: [{
 							thumb: 'http://img1.qunarzz.com/sight/p0/2005/39/3979f1867defec4ea3.water.jpg_280x200_e1b47993.jpg',
@@ -84,6 +112,7 @@
 		},
 		onLoad() {
 			this.loadData();
+			this.getTagSight();
 		},
 		methods: {
 			async loadData() {
@@ -98,14 +127,14 @@
 				uni.request({
 					url: "http://47.102.212.4:8080/search/tag", //请求接口
 					data: {
-						tag: this.item.name,
+						tag: this.current.name,
 					},
 					header:{'content-type':'application/x-www-form-urlencoded'},
 					method: 'POST',
 					success: (res) => { //请求成功后返回
 						console.log(res.data)
 						if (res.statusCode === 200) {
-							
+							this.sightList = res.data.data;
 							this.hackReset = false;
 							this.$nextTick(() => {
 								this.hackReset = true;
@@ -121,7 +150,7 @@
 			},
 			changeCate(item) {
 				this.current = item;
-				
+				this.getTagSight();
 			},
 			navToList(item) {
 				const arr = [];
