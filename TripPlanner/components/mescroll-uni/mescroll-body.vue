@@ -15,16 +15,14 @@
 		<view class="mescroll-body-content mescroll-wxs-content" :style="{ transform: translateY, transition: transition }" :change:prop="wxsBiz.callObserver" :prop="callProp">
 			<!-- 下拉加载区域 (支付宝小程序子组件传参给子子组件仍报单项数据流的异常,暂时不通过mescroll-down组件实现)-->
 			<!-- <mescroll-down :option="mescroll.optDown" :type="downLoadType" :rate="downRate"></mescroll-down> -->
-			<view v-if="mescroll.optDown.use" class="mescroll-downwarp" :style="{'background':mescroll.optDown.bgColor,'color':mescroll.optDown.textColor}">
+			<!-- <view v-if="mescroll.optDown.use" class="mescroll-downwarp" :style="{'background':mescroll.optDown.bgColor,'color':mescroll.optDown.textColor}">
 				<view class="downwarp-content" :change:prop="renderBiz.propObserver" :prop="wxsProp">
-					<!-- <view class="downwarp-progress mescroll-wxs-progress" :class="{'mescroll-rotate': isDownLoading}" :style="{'border-color':mescroll.optDown.textColor, 'transform': downRotate}"></view> -->
 					<view class="downwarp-tip">
 						<image v-show="downText === '下拉刷新'" style="width:80rpx;height:86rpx" src="/static/loading/hamster.png"></image>
 						<image v-show="downText !== '下拉刷新'" style="width:80rpx;height:86rpx" src="/static/loading/hamster.gif"></image>
 					</view>
-					<!-- {{downText}} -->
 				</view>
-			</view>
+			</view> -->
 	
 			<!-- 列表内容 -->
 			<slot></slot>
@@ -38,14 +36,14 @@
 				<!-- 加载中 (此处不能用v-if,否则android小程序快速上拉可能会不断触发上拉回调) -->
 				<view v-show="upLoadType===1" :style="{height: upLoadType===1 ? 'auto' : 0}" style="display: flex;align-items: center;justify-content: center;overflow: hidden">
 					<!-- <view class="upwarp-progress mescroll-rotate" :style="{'border-color':mescroll.optUp.textColor}"></view> -->
-					<image style="width: 64rpx;height: 68rpx" src="/static/loading/hamster.gif"></image>
-					<view class="upwarp-tip">{{ mescroll.optUp.textLoading }}</view>
+					<!-- <image style="width: 64rpx;height: 68rpx" src="/static/loading/hamster.gif"></image> -->
+					<!-- <view class="upwarp-tip">{{ mescroll.optUp.textLoading }}</view> -->
 				</view>
 				<!-- 无数据 -->
 				<!-- <view v-if="upLoadType===2" class="upwarp-nodata">{{ mescroll.optUp.textNoMore }}</view> -->
 				<view v-if="upLoadType===2" class="mix-nodata center">
 					<image class="logo" src="/static/logo-b-w.png"></image>
-					<text>国云网络提供技术支持</text>
+					<text>By Trip Planner</text>
 				</view>
 			</view>
 		</view>

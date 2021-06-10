@@ -118,6 +118,7 @@
 					sales: ele.sales,
 					price: ele.price,
 					_id: id,
+					sales: ele.visitNum,
 				})
 			});
 			console.log(this.renderList);
