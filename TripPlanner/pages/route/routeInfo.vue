@@ -17,7 +17,6 @@
 					</view>
 					<view class="routedes">{{ routedes }}</view>
 				</view>
-				<!-- <view class="kongbai"></view> -->
 			</view>
 			<view class="detail-desc">
 				<view class="d-header center">
@@ -28,13 +27,13 @@
 			<!-- 列表 -->
 			<uni-swipe-action>
 				<uni-swipe-action-item v-for="(item, index) in list" :key="item._id" :options="options" @click="remove($event,index)" >
-					<view class="item row">
+					<view class="item row" style="margin-bottom: 20rpx;">
 						<text class="mix-icon icon-xuanzhong" :class="{active: item.checked}" @click.stop.prevent="checkRow(item)"></text>
-						<view class="image-wrapper lazyload lazypic" :class="{loaded: item.loaded}" @click="navTo('/pages/product/detail?id='+item.product_id)">
-							<image :src="item.image" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)" ></image>
+						<view class="image-wrapper lazyload lazypic" :class="{loaded: item.loaded}" @click="navTo('/pages/product/detail?id='+item.sid)">
+							<image :src="item.picUrl" mode="aspectFill" lazy-load="true" @load="imageOnLoad(item)" ></image>
 						</view>
 						<view class="right column">
-							<text class="title clamp">{{item.title}}</text>
+							<text class="title clamp">{{item.name}}</text>
 						</view>
 					</view>
 				</uni-swipe-action-item>
@@ -71,6 +70,7 @@
 		mixins: [tabbarMixin, MescrollMixin], 
 		data() {
 			return {
+				routeid:"60c20b6b3793a165210af32c",
 				routename:"路线名称",
 				routedes:"路线描述",
 				options: [{
@@ -90,24 +90,26 @@
 					},
 					noMoreSize: 50,
 				},
-				list: [{
-							image: 'http://img1.qunarzz.com/sight/p0/2005/39/3979f1867defec4ea3.water.jpg_280x200_e1b47993.jpg',
-							title: '路线1',
-							sales: '2307',
-							price: '40'
-						},
-						{
-							image: 'http://img1.qunarzz.com/tuan/team2/1507/2c/83e0e0e7ae082a.jpg_280x200_8c8e548a.jpg',
-							title: '路线2',
-							sales: '2307',
-							price: '69.9'
-						},
-						{
-							image: 'http://img1.qunarzz.com/sight/p64/201211/04/9173ff9f33e97f3193835fbb.jpg_280x200_9537b05a.jpg',
-							title: '路线3',
-							sales: '2307',
-							price: '47'
-						}],
+				list: [
+					// {
+					// 		image: 'http://img1.qunarzz.com/sight/p0/2005/39/3979f1867defec4ea3.water.jpg_280x200_e1b47993.jpg',
+					// 		title: '路线1',
+					// 		sales: '2307',
+					// 		price: '40'
+					// 	},
+					// 	{
+					// 		image: 'http://img1.qunarzz.com/tuan/team2/1507/2c/83e0e0e7ae082a.jpg_280x200_8c8e548a.jpg',
+					// 		title: '路线2',
+					// 		sales: '2307',
+					// 		price: '69.9'
+					// 	},
+					// 	{
+					// 		image: 'http://img1.qunarzz.com/sight/p64/201211/04/9173ff9f33e97f3193835fbb.jpg_280x200_9537b05a.jpg',
+					// 		title: '路线3',
+					// 		sales: '2307',
+					// 		price: '47'
+					// 	},
+						],
 				invalidList: [],
 				totalPrice: 0,
 			}
@@ -126,6 +128,7 @@
 			}
 		},
 		onLoad() {
+			this.getRouteInfo()
 			uni.$on('refreshCart', ()=>{
 				this.list = [];
 				this.invalidList = [];
@@ -262,6 +265,32 @@
 					total += item.price * item.number
 				})
 				this.totalPrice = total;
+			},
+			getRouteInfo(){
+				uni.request({
+				   url: "http://47.102.212.4:8082/search/getrouteSight", //请求接口
+				   data:{
+					   routeId: this.routeid,
+				   },
+				   method: 'GET',
+				success: (res) => {//请求成功后返回
+						if (res.data.code === 20000){
+							this.routename = res.data.data.name;
+							this.routedes = res.data.data.desc;
+							this.list = res.data.data.sights;
+							console.log(this.list)
+							uni.showToast({
+								title: '成功获取路线',
+								duration: 2000
+							});
+						}else{
+							uni.showToast({
+								title: '路线请求错误',
+								duration: 2000
+							});		
+						}
+				   }
+				});
 			}
 		}
 	}
