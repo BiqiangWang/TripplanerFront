@@ -374,7 +374,8 @@
 							this.introduction = res.data.data.sightInfo.Sight.desc;
 							this.address = res.data.data.sightInfo.Sight.address;
 							this.visitnumber = res.data.data.sightInfo.Sight.visitnum.slice(0,-2);
-							this.score = res.data.data.sightInfo.Sight.starlevel.substr(0,4);
+							this.score = res.data.data.sightInfo.Sight.starlevel.substr(0,3);
+							this.score = Number(this.score)*5
 							this.data.price = res.data.data.sightInfo.Sight.price;
 							if(this.data.price == ""){
 								this.data.price = 0;
