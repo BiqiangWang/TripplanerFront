@@ -67,7 +67,6 @@
 			this.$store.dispatch('getUserInfo');
 			this.userid = this.userInfo.id;
 			console.log(this.userid)
-			this.getUserInfo();
 		},
 		data() {
 			return {
@@ -158,6 +157,9 @@
 				}
 			},
 			routePlan(){
+				if(!this.mobile){
+					this.mobile="暂无"
+				}
 				uni.request({
 				   url: "http://47.102.212.4:8082/search/route", //请求接口
 				   data:{
@@ -173,13 +175,14 @@
 				   method: 'POST',
 				   header:{'content-type':'application/x-www-form-urlencoded'},
 				success: (res) => {//请求成功后返回
-						if (res.data.code === 20000){
+						if (res.data.code == 20000){
+							console.log(res)
 							console.log(res.data.data);
 							uni.showToast({
 								title: '路线规划成功',
 								duration: 2000
 							});
-							this.navTo('/pages/route/routeInfo?')
+							this.navTo('/pages/route/routeInfo?id=' + res.data.data)
 						}else{
 							uni.showToast({
 								title: '路线规划请求错误',

@@ -127,8 +127,8 @@
 				this.calcTotalPrice();
 			}
 		},
-		onLoad() {
-			this.routeid = this.$route.query.id;
+		onLoad(options) {
+			this.routeid=options.id
 			this.getRouteInfo()
 			uni.$on('refreshCart', ()=>{
 				this.list = [];

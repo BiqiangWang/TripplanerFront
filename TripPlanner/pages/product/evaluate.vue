@@ -135,10 +135,7 @@
 							this.userlv = res.data.data.userInfo.User.level;
 							this.username = res.data.data.userInfo.User.name;
 						}else{
-							uni.showToast({
-								title: '获取失败',
-								duration: 2000
-							});		
+							
 						}
 							
 				   }
