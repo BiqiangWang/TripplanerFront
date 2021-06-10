@@ -5,7 +5,7 @@
 			<view class="user-wrapper">
 				<image class="avatar" :src="userInfo.avatar || '/static/icon/default-avatar.png'" @click="navTo('/pages/set/userInfo', {login: true})"></image>
 				<view class="cen column" v-if="hasLogin">
-					<text class="username f-m">{{ userInfo.nickname || userInfo.username }}</text>
+					<text class="username f-m">{{ userInfo.nickname || userInfo.name }}</text>
 					<text class="user-group">普通会员</text>
 				</view>
 				<view class="login-box" v-else @click="navTo('/pages/auth/login')">
@@ -104,10 +104,14 @@
 		},
 		onShow(){
 			this.loadHistory();
-			
 			this.$store.dispatch('getUserInfo'); //更新订单数量
-			this.$store.dispatch('getOrderCount'); //更新订单数量
-			this.$store.dispatch('getCouponCount'); //更新优惠券数量
+			console.log(this.userInfo);
+			console.log(this.hasLogin);
+			if (this.userInfo == {}) {
+				this.hasLogin = false;
+			}
+			// this.$store.dispatch('getOrderCount'); //更新订单数量
+			// this.$store.dispatch('getCouponCount'); //更新优惠券数量
 		},
         methods: {
 			//加载浏览记录

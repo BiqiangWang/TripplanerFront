@@ -69,10 +69,13 @@
 					uni.navigateBack();
 				}, 1000)
 			},
-			getUserInfo(){
+			getUserInfo(userid){
 				var _self = this;
 				uni.request({
 					url: "http://47.102.212.4:8090/user/getuserInfo",
+					data: {
+						userId: userid
+					},
 					method: 'GET',
 					success: (res) => { //请求成功后返回
 						console.log(res)
@@ -108,8 +111,9 @@
 									title: '登录成功',
 									duration: 2000,
 								});
-								this.getUserInfo();
-								this.loginSuccessCallBack(0);
+								var userid = res.data.data.id;
+								this.getUserInfo(userid);
+								this.loginSuccessCallBack(userid);
 							} else {
 								uni.showToast({
 									title: '登录失败',

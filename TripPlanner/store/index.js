@@ -16,6 +16,9 @@ const store = new Vuex.Store({
 	},
 	getters: {
 		hasLogin(state){
+			console.log(1123213);
+			console.log(state.token);
+			if (typeof state.token == "object") return false;
 			if (state.token != '') return true;
 			else return false;
 		}
@@ -33,10 +36,10 @@ const store = new Vuex.Store({
 		},
 		//更新token
 		setToken(state, data){
-			const {token, tokenExpired} = data;
+			const token = data;
 			state.token = token;
 			uni.setStorageSync('uniIdToken', token);
-			uni.setStorageSync('tokenExpired', tokenExpired);
+			// uni.setStorageSync('tokenExpired', tokenExpired);
 			this.dispatch('getUserInfo'); //更新用户信息
 			//this.dispatch('getCartCount');//更新购物车数量
 			//uni.$emit('refreshCart');//刷新购物车
@@ -60,17 +63,19 @@ const store = new Vuex.Store({
 			var _self = this;
 			uni.request({
 				url: "http://47.102.212.4:8090/user/getuserInfo",
+				data: {
+					userId: state.token
+				},
 				method: 'GET',
 				success: (res) => { //请求成功后返回
-					console.log(res)
 					if (res.statusCode === 200) {
 						if (res.data.success) {
 							const userInfo = res.data.data.userInfo.User;
-							console.log(userInfo);
 							commit('setStateAttr', {
 								key: 'userInfo',
 								val: userInfo
 							})
+							console.log(state.userInfo);
 						}
 					}
 				}
