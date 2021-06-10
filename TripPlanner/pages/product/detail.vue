@@ -53,8 +53,8 @@
 			<view class="e-header" @click="navTo('/pages/rating/rating?id='+data._id)">
 				<text class="tit">景点评价</text>
 				<text>({{ ratingData.count || 0 }})</text>
-				<text class="tip">好评率 {{ data.rating_ratio || 100 }}%</text>
-				<text class="mix-icon icon-you"></text>
+				<!-- <text class="tip">好评率 {{ data.rating_ratio || 100 }}%</text> -->
+				<text class="mix-icon icon-you" style="margin-left: 500rpx;"></text>
 			</view>
 			<rating-item v-if="commentshow" :items="ratingData.data"></rating-item>
 			<view v-if="!commentshow" class="sight_address" > 这里还没有评论哦 </view>
@@ -378,7 +378,7 @@
 							this.address = res.data.data.sightInfo.Sight.address;
 							this.visitnumber = res.data.data.sightInfo.Sight.visitnum.slice(0,-2);
 							this.score = res.data.data.sightInfo.Sight.starlevel.substr(0,3);
-							this.score = Number(this.score)*5
+							this.score = Number(this.score)*5;
 							this.data.price = res.data.data.sightInfo.Sight.price;
 							if(this.data.price == ""){
 								this.data.price = 0;
