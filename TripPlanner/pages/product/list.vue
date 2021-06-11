@@ -137,12 +137,13 @@
 			getHotList() {
 				var _self = this;
 				uni.request({
-					url: "http://47.102.212.4:8092/sight/recommend",
+					url: "http://47.102.212.4:8082/search/recommend",
 					method: 'GET',
 					success: (res) => { //请求成功后返回
 						console.log(res.data)
 						if (res.statusCode === 200) {
-							this.list = res.data.data.sights.sightlist;
+							// this.list = res.data.data.sights.sightlist;
+							this.list = res.data.data;
 							console.log(this.list);
 							this.hackReset = false;
 							this.$nextTick(() => {

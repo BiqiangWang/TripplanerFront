@@ -9,6 +9,13 @@
 			@up="loadList" 
 		> -->
 			<!-- 列表 -->
+			
+			<view class="user-wrapper" v-if="!hasLogin">
+				<view class="login-box" @click="navTo('/pages/auth/login')">
+					<image src="/static/empty/address.png" style="margin-left: 30px; margin-top:50px;"></image>
+				</view>
+				<text style="margin-left: 150px; margin-top: 20px; text-align: center; color: #8F8F94;">请登录</text>
+			</view>
 			<uni-swipe-action>
 				<uni-swipe-action-item v-if="hackReset" v-for="(item, index) in list" :key="item._id" :options="options" @click="remove($event,index)" >
 					<view class="item row" style="margin-top: 10px;">
@@ -111,6 +118,7 @@
 		},
 		computed: {
 			...mapState(['userInfo', 'orderCount', 'couponCount']),
+			...mapGetters(['hasLogin']),
 			allChecked(){
 				return this.list.length > 0 && this.list.every(item=> item.checked);
 			},
