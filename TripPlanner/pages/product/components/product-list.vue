@@ -84,22 +84,30 @@
 		created: function(){
 			// setTimeout(function(){}, 3000);
 			console.log("111");
-			console.log(this.list);
 			this.renderList = this.list.map(ele=>{
 				var pic;
 				var name;
 				var id;
+				
+				console.log(typeof ele.name);
+				
 				if (ele.thumb !== undefined) {
 					pic = ele.thumb;
 				}
 				if (ele.picUrl !== undefined) {
 					pic = ele.picUrl;
 				}
+				if (ele.picurl !== undefined) {
+					pic = ele.picurl;
+				}
 				if (ele.title !== undefined) {
 					name = ele.title;
 				}
 				if (ele.name !== undefined) {
 					name = ele.name;
+				}
+				if (ele.sightname !== undefined) {
+					name = ele.sightname;
 				}
 				if (ele.id !== undefined) {
 					id = ele.id;

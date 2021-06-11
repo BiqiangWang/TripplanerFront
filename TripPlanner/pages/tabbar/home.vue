@@ -18,7 +18,7 @@
 			<!-- 头部轮播图 -->
 			<banner :list="carousel"></banner>
 			<view class="hot-wrap" :class="{show: loaded}">
-				<view class="floor-header row" @click="navTo('/pages/product/list?isHot=1')">
+				<view class="floor-header row" @click="navTo('/pages/product/list?isHot=1')" v-show="hasLogin">
 					<image class="icon" src="/static/icon/hot.png"></image>
 					<view class="column fill">
 						<text class="tit">智能推荐</text>
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+	import {mapState, mapGetters} from 'vuex'
 	import tabbarMixin from './mixin/tabbar' 
 	import homeMixin from './mixin/home'
 	import pageHeader from './components/page-header.vue'
@@ -69,11 +70,11 @@
 							id: '22'
 						},
 						{
-							thumb: 'http://img1.qunarzz.com/tuan/team2/1507/2c/83e0e0e7ae082a.jpg_280x200_8c8e548a.jpg',
-							title: '东方明珠',
+							thumb: 'http://img1.qunarzz.com/sight/p0/1602/92/920e47352552c1c990.water.jpg_280x200_cf5666bb.jpg',
+							title: '天坛公园',
 							sales: '3601',
-							price: '69.9',
-							id: '99'
+							price: '10.5',
+							id: '363'
 						},
 						{
 							thumb: 'http://img1.qunarzz.com/sight/p64/201211/04/9173ff9f33e97f3193835fbb.jpg_280x200_9537b05a.jpg',
@@ -81,11 +82,20 @@
 							sales: '542',
 							price: '47',
 							id:'541'
+						},
+						{
+							thumb: 'http://img1.qunarzz.com/sight/p0/1603/97/97a91e052b51aa9890.water.jpg_280x200_ba2a9853.jpg',
+							title: '天涯海角',
+							sales: '2280',
+							price: '50',
+							id:'757'
 						}
 					],//热门推荐
 			}
 		},
 		computed: {
+			...mapState(['userInfo', 'orderCount', 'couponCount']),
+			...mapGetters(['hasLogin']),
 			midAdvert(){
 				if(this.advertList.length === 0) return {};
 				const res = this.advertList.filter(item=> item.advert_type === 'middle');
@@ -102,6 +112,16 @@
 			setTimeout(()=>{
 				//this.navTo('/pages/address/list')
 			}, 1000)
+		},
+		onShow(){
+			this.$store.dispatch('getUserInfo'); 
+			console.log(this.userInfo);
+			console.log(this.hasLogin);
+			if (this.userInfo == {}) {
+				this.hasLogin = false;
+			}
+			// this.$store.dispatch('getOrderCount'); //更新订单数量
+			// this.$store.dispatch('getCouponCount'); //更新优惠券数量
 		},
 		methods: {
 			//加载广告 缓存10分钟
