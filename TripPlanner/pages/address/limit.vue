@@ -77,6 +77,7 @@
 				city:'',
 				is_default: true,
 				data: {
+					
 					address: {}
 				},
 				checkboxItems: [
@@ -157,14 +158,14 @@
 				}
 			},
 			routePlan(){
-				if(!this.mobile){
-					this.mobile="暂无"
+				if(!this.data.mobile){
+					this.data.mobile="暂无"
 				}
 				uni.request({
 				   url: "http://47.102.212.4:8082/search/route", //请求接口
 				   data:{
 					   name: this.data.name,
-					   desc: this.mobile,
+					   desc: this.data.mobile,
 					   city: this.city,
 					   cost: this.budget,
 					   snum: this.sightnum,
@@ -182,6 +183,7 @@
 								title: '路线规划成功',
 								duration: 2000
 							});
+							this.data.mobile='';
 							this.navTo('/pages/route/routeInfo?id=' + res.data.data)
 						}else{
 							uni.showToast({

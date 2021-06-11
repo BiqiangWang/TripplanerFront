@@ -280,10 +280,10 @@
 							this.routedes = res.data.data.desc;
 							this.list = res.data.data.sights;
 							console.log(this.list)
-							uni.showToast({
-								title: '成功获取路线',
-								duration: 2000
-							});
+							// uni.showToast({
+							// 	title: '成功获取路线',
+							// 	duration: 2000
+							// });
 						}else{
 							uni.showToast({
 								title: '路线请求错误',
