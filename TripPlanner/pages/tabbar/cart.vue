@@ -139,6 +139,8 @@
 			})
 		},
 		onShow() {
+			
+			this.list = [];
 			this.$store.dispatch('getUserInfo');
 			this.userid = this.userInfo.id;
 			console.log(this.userid)
